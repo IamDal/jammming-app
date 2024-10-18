@@ -1,0 +1,30 @@
+.title {
+    color: white;
+    text-align: left;
+    line-height: 0%;
+}
+
+.artist {
+    color: gray;
+    text-align: left;
+    line-height: 0%;
+    font-size: 12px;
+}
+
+.trackContainer {
+    display: flex;
+    align-items: center;
+    width: 250px;
+    justify-content: space-between;
+    border-bottom: 1px rgba(182, 180, 180,0.2) solid;
+}
+
+.button {
+    height: 40px;
+    width: 40px;
+    border: none;
+    color: white;
+    font-size: 20px;
+    border-radius: 20px;
+    background-color: rgba(0,0,0,0);
+}
