@@ -1,67 +1,102 @@
-import React, {useState} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import Tracklist from './Tracklist';
 import Playlist from './Playlist';
 import Track from "./Track";
+import { createPlaylist } from "./spotify-requests";
 
-const searchResults = [
-  {artist:'Dalton',
-    song: 'Cookie and Cream',
-    album: 'Mixing Sweets',
-    uri: 'sample_uri'},
-  {artist:'Dalton',
-    song: 'Peaches and Cream',
-    album: 'Mixing Sweets',
-    uri: 'sample_uri_2'}
-  ]
 
-export default function SearchResults(props) {
+export default function SearchResults({ searchResults, searchValue }) {
+
     const [selection, setSelection ] = useState([])
     const [playlistName, setPlaylistName] = useState('')
-
-    function onChange(e){
+    const [tracklist, setTracklist] = useState([])
+    const [selectionList, setSelectionList] = useState([])
+    
+    // Function to update playlist name
+    const onChange = useCallback((e)=>{
         setPlaylistName(e.target.value)
-    }
+    },[])
 
-    function handleFormSubmit(e){
+    // Function to handle new playlist submission
+    const handleFormSubmit = useCallback((e) => {
         e.preventDefault()
         const selectionUri = selection.map((track)=>track['uri'])
-        console.log(selectionUri)
+        createPlaylist(playlistName, selectionUri)
         setSelection([])
-    }
+        setTracklist([])
+    },[playlistName, selection])
 
-    function addSong(e){
+    // Function to add new song to playlist
+    const addSong = useCallback((e) => {
+        e.preventDefault()
         const trackId = e.target.id
-        const songToAdd = searchResults[trackId]
-        setSelection(()=>[...selection, songToAdd])
-    }
+        const songToAdd = searchResults.filter(track => {
+            return track.uri === trackId
+        })
+        setSelection((prev)=>[...prev, songToAdd[0]])
+    },[searchResults])
 
-    function removeSong(e){
+    // Function to remove song from playlist
+    const removeSong = useCallback((e) => {
+        e.preventDefault()
         const trackId = e.target.id
-        setSelection(()=>{
-            const selectionUpdate = selection.filter((track,index) => index != trackId)
+        setSelection((prev)=>{
+            const selectionUpdate = prev.filter((track,index) => {
+                return track.uri !== trackId
+            })
             return selectionUpdate
         })
-    }
+    },[])
 
-    const tracklist = searchResults.map((track,index)=>{
-        return(
-            <li key={track.uri}>
-                <Track song={track.song} artist={track.artist} 
-                    album={track.album} id={index} buttonValue='+'
-                    handleClick={addSong}/>
-            </li>
-        )
-    })
+    // Returns a list of tracks from search
+    const updateTracklist = useCallback(() => {
+        setTracklist(() => {
+            if (!searchResults || !searchValue){
+                return []
+            }
+            const newSearch =  searchResults.map((track) => {
+                if (!track) {
+                    return []
+                }
+                return(
+                    <li key={track.uri}>
+                        <Track song={track.song} artist={track.artist} 
+                            album={track.album} cover={track.cover} 
+                            id={track.uri} buttonValue='+'
+                            handleSongUpdate={addSong}/>
+                    </li>
+                )
+            })
+            return newSearch
+        })
+    },[addSong,searchResults,searchValue])
 
-    const selectionList = selection.map((track,index)=>{
-        return(
-            <li key={track.uri}>
-                <Track song={track.song} artist={track.artist}
-                    album={track.album} id={index} buttonValue='-' 
-                    handleClick={removeSong} />
-            </li>
-        )
-    })
+    // Returns a list of tracks that have been selected
+    const updateSelectionList = useCallback(() => {
+        setSelectionList(()=>{
+            const newSelection = selection.map((track)=>{
+                return (
+                    <li key={track.uri}>
+                        <Track song={track.song} artist={track.artist}
+                            album={track.album} cover={track.cover} 
+                            id={track.uri} buttonValue='-' 
+                            handleSongUpdate={removeSong} />
+                    </li>
+                )
+            })
+            return newSelection
+        })
+    },[selection,removeSong])
+
+    // Effect updates track list on change
+    useEffect(()=>{
+        updateTracklist()
+    },[searchResults, updateTracklist])
+
+    // Effect updates selection on change
+    useEffect(()=>{
+        updateSelectionList()
+    },[selection, updateSelectionList])
 
     return (
         <>

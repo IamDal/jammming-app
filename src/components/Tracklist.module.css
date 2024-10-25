@@ -1,9 +1,17 @@
 .resultTitle {
     color: white;
     text-align: left;
+    padding-left: 40px;
 }
 
 .container {
     display: block;
     width: 250px;
+}
+
+.results {
+    display: block;
+    width: 500px;
+    height: 600px;
+    overflow-y: scroll;
 }

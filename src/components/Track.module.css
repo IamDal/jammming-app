@@ -2,21 +2,51 @@
     color: white;
     text-align: left;
     line-height: 0%;
+    width: 100%;
+    font-size: 16px;
+    text-overflow: ellipsis;
 }
 
 .artist {
     color: gray;
     text-align: left;
     line-height: 0%;
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .trackContainer {
     display: flex;
     align-items: center;
-    width: 250px;
+    width: 400px;
     justify-content: space-between;
     border-bottom: 1px rgba(182, 180, 180,0.2) solid;
+    margin-bottom: 5px;
+}
+
+img {
+    font-size: 8px;
+    object-fit: fill;
+    height: 100%;
+    width: 100%;
+}
+
+.cover {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: cornflowerblue;
+}
+
+.track {
+ display:flex;
+ justify-content: flex-start;
+ gap: 10px;
+}
+
+.details {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 300px;
 }
 
 .button {
