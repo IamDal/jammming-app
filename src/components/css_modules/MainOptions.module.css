@@ -1,0 +1,26 @@
+.options {
+    display: flex;
+    height: 600px;
+    width:600px;
+    background-color: rgba(62, 4, 117, 0.684);
+    border-radius: 300px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 80px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.optionsH1 {
+    color: rgb(194, 172, 231);
+}
+
+.optionsH1:hover {
+    color: white;
+    font-size: 50px;
+    transition-duration: 500ms;
+    cursor: pointer;
+}

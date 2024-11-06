@@ -1,0 +1,107 @@
+.modify {
+    width: 150px;
+    height: 40px;
+}
+
+.imageContainer {
+    display: flex;
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+    background-color: none;
+    color: blueviolet;
+    font-size: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.imageContainer img {
+ border-radius: 100px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(63, 14, 131, 0.843);
+    width: 400px;
+    margin: auto;
+    margin-top: 80px;
+    padding: 30px;
+    border-radius: 50%;
+    color: white;
+}
+
+.homeContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(87, 7, 185, 0.843);
+    width: 400px;
+    margin: auto;
+    margin-top: 80px;
+    padding: 30px;
+    border-radius: 50%;
+    color: white;
+}
+
+.prev, .next, .homePrev, .homeNext{
+    cursor: pointer;
+    position: absolute;
+    top: 40%;
+    width: auto;
+    color: white;
+    transition:  0.6s ease;
+    border-radius: 0 3px 3px 0;
+    font-size: 30px;
+    border: 3px 0 0 3px;
+    height: 60px;
+}
+
+.next {
+    right: 30%;
+}
+
+.prev {
+    left: 30%;
+}
+
+.homeNext {
+    right: 20%;
+    top: 50%;
+}
+
+.homePrev {
+    left: 60%;
+    top: 50%;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+.container a,.homeContainer a {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+}
+
+.container a:hover,.homeContainer a:hover {
+    font-weight: 600;
+    transition-duration: 500ms;
+}
+
+
+/* Fading animation */
+.fade {
+    animation-name: fade;
+    animation: fade 1s ease-in-out;
+    animation-duration: 1.5s;
+  }
+  
+  @keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+  }

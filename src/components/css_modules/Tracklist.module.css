@@ -12,6 +12,7 @@
 .results {
     display: block;
     width: 500px;
-    height: 600px;
+    height: 450px;
     overflow-y: scroll;
+    margin-bottom: 50px;
 }

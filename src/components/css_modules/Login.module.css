@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 800px;
+    color:white;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+
+}
+
+.loginH1 {
+    text-shadow: 5px 5px rgb(27, 84, 133);
+}
+
+p {
+    font-size: 16px;
+}
+
+.loginButton {
+    width: 200px;
+    border: none;
+    font-size: 20px;
+    background-color: rgb(100, 1, 207);
+    color: white;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: rgb(119, 3, 243);
+    cursor: pointer;
+}
+
+.spotifyImage {
+    width: 10%;
+    height: 10%;
+    margin-bottom: 50px;
+}

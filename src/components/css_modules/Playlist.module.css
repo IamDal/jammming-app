@@ -16,5 +16,16 @@ input {
     height: 50px;
     border-radius: 25px;
     border-style: hidden;
-    background-color: rgb(199, 132, 251);
+    background-color: rgb(89, 1, 156);
+    font-weight: bold;
+    color: white;
+    font-size: 16px;
+
+}
+
+.container {
+    display: block;
+    width: 500px;
+    max-height: 450px;
+    overflow-y: scroll;
 }

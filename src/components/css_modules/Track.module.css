@@ -3,24 +3,31 @@
     text-align: left;
     line-height: 0%;
     width: 100%;
-    font-size: 16px;
+    font-size: 14px;
     text-overflow: ellipsis;
 }
 
 .artist {
-    color: gray;
+    color: rgb(209, 209, 209);
     text-align: left;
     line-height: 0%;
-    font-size: 11px;
+    font-size: 10px;
 }
 
 .trackContainer {
     display: flex;
+    background-color: rgba(40, 40, 40, 0.4);
     align-items: center;
     width: 400px;
     justify-content: space-between;
     border-bottom: 1px rgba(182, 180, 180,0.2) solid;
     margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.trackContainer:hover{
+    background-color: rgba(38, 5, 110, 0.8);
 }
 
 img {
@@ -28,12 +35,13 @@ img {
     object-fit: fill;
     height: 100%;
     width: 100%;
+    border-radius: 5px;
 }
 
 .cover {
     width: 60px;
     height: 60px;
-    border-radius: 10px;
+    border-radius: 5px;
     background-color: cornflowerblue;
 }
 
@@ -50,11 +58,19 @@ img {
 }
 
 .button {
-    height: 40px;
-    width: 40px;
+    height: 25px;
+    width: 25px;
     border: none;
     color: white;
-    font-size: 20px;
-    border-radius: 20px;
+    font-size: 16px;
+    border-radius: 12px;
     background-color: rgba(0,0,0,0);
+}
+
+.spotifyImage {
+    width: 18px;
+    height: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid gray;
+    border-radius: 0;
 }
