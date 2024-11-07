@@ -1,7 +1,7 @@
 .options {
     display: flex;
-    height: 600px;
-    width:600px;
+    height: 37.5rem;
+    width:37.5rem;
     background-color: rgba(62, 4, 117, 0.684);
     border-radius: 300px;
     align-items: center;
@@ -11,7 +11,9 @@
 
 .container {
     display: flex;
+    flex: 1 1 auto;
     justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .optionsH1 {

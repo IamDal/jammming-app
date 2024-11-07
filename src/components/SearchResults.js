@@ -3,7 +3,7 @@ import Tracklist from './Tracklist';
 import Playlist from './Playlist';
 import Track from "./Track";
 import ModifyPlaylist from './ModifyPlaylist';
-import { createPlaylist, getPlaylistTracks, modifyUserPlaylist } from "./spotify-requests";
+import { createPlaylist, getPlaylistTracks, modifyUserPlaylist } from "./SpotifyRequests";
 
 
 export default function SearchResults(props) {
@@ -12,6 +12,7 @@ export default function SearchResults(props) {
         playlistName, setPlaylistName, changePage } = props
 
     const [selection, setSelection ] = useState([])
+    const [currentPlaylistName, setCurrentPlaylistName ] = useState(playlistName)
     const [tracklist, setTracklist] = useState([])
     const [selectionList, setSelectionList] = useState([])
     const [playlistTracks, setPlaylistTracks] = useState([])
@@ -102,6 +103,8 @@ export default function SearchResults(props) {
         })
 
         const playlistMod = {
+            newName: playlistName,
+            name: currentPlaylistName,
             added: addedTracks,
             removed: removedTracks,
             sorted: modifiedUris,
@@ -110,18 +113,18 @@ export default function SearchResults(props) {
             playlistId: playlistToModify
         }
         return playlistMod
-    },[modifiedUris, playlistSnapshotId, playlistToModify, playlistTracks])
+    },[modifiedUris, playlistSnapshotId, playlistToModify, playlistTracks, playlistName, currentPlaylistName])
 
 
     async function submitPlaylist(e){
         e.preventDefault()
         const playlistObject = getTrackModifications()
-        console.log(playlistObject)
         await modifyUserPlaylist(playlistObject)
         setTracklist([])
         setSearchValue('')
         setPlaylistName('')
         changePage('new')
+        setCurrentPlaylistName('')
     }
 
     // Function to update playlist name

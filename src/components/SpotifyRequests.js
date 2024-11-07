@@ -1,11 +1,19 @@
 import getUpdatedTrackLocations from "./reorder.js"
 
 const clientId = process.env.REACT_APP_CLIENT_ID;
+const clientSecret = process.env.REACT_APP_CLIENT_SECRET;
 const tokenURL = "https://accounts.spotify.com/api/token";
 const apiURL = "https://api.spotify.com/v1/";
 const redirectUri = 'http://localhost:3000';
 const tokenType="Bearer"
 const accessToken = localStorage.getItem('access_token');
+
+const base64encode = (input) => {
+    return btoa(String.fromCharCode(...new Uint8Array(input)))
+      .replace(/=/g, '')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_');
+  }
 
 const currentToken = {
     get user () {
@@ -121,8 +129,6 @@ async function getTrack(searchTerm) {
                 preview: items['preview_url'],
                 url:items['external_urls']['spotify'],
                 cover: albumCover['url'],
-                start: null,
-                end: null,
                 added: false,
                 removed: false
             }
@@ -140,6 +146,9 @@ async function modifyUserPlaylist(playlistObject){
     }
     if (playlistObject.removed.length > 0){
         await removeTracksFromPlaylist(playlistObject.removed, playlistObject.playlistId, playlistObject.snapshotId)
+    }
+    if (playlistObject.name !== playlistObject.newName){
+        await updatePlaylistName(playlistObject.playlistId, playlistObject.newName)
     }
     await updateTracks(playlistObject.sorted, playlistObject.playlistId)
 }
@@ -165,6 +174,32 @@ async function getPlaylist(playlistId){
         }
     } catch (error) {
         console.log(error)
+    }
+}
+
+async function updatePlaylistName(playlistId, nameOfPlaylist) {
+    const endpoint = apiURL + `playlists/${playlistId}`
+    const headers = {             
+        "Authorization": `${tokenType} ${accessToken}`,
+        "Content-Type": "application/json"
+    }
+    const description = `${nameOfPlaylist} description`
+    try {
+        const response = await fetch(endpoint,{
+            method:"PUT",
+            headers: headers,
+            body: JSON.stringify({
+                "name": nameOfPlaylist,
+                "description": description,
+                "public": false
+            })
+        })
+        if(!response.ok){
+            throw new Error(`Error renaming playlist: ${response.status}`)
+        }
+        console.log('Name Changed successful')
+    } catch (error) {
+        console.log(error.message)
     }
 }
 
@@ -229,7 +264,7 @@ async function removeTracksFromPlaylist(urisToRemove, playlistId, snapshotId){
         if (!response.ok) {
             throw new Error(`Error Deleting Tracks: ${response.status}`)
         }
-        alert('Songs Deleted Successfully')
+        console.log('Songs Deleted Successfully')
     } catch (error) {
         console.log(`Error during request: ${error}`)
     }
@@ -341,7 +376,7 @@ async function createPlaylist(nameOfPlaylist, tracks) {
         } catch(error){
             console.log(error.message)
         }
-        alert('Playlist created')
+        console.log('Playlist created')
     } catch (error) {
         console.log(error.message)
     }
@@ -425,13 +460,6 @@ async function redirectToSpotifyAuthorize() {
         return window.crypto.subtle.digest('SHA-256', data)
     }
     
-    const base64encode = (input) => {
-        return btoa(String.fromCharCode(...new Uint8Array(input)))
-          .replace(/=/g, '')
-          .replace(/\+/g, '-')
-          .replace(/\//g, '_');
-      }
-
     const codeVerifier  = generateRandomString(64);
     const hashed = await sha256(codeVerifier)
     const codeChallenge = base64encode(hashed)
@@ -479,8 +507,35 @@ async function getAuthorizedToken(code) {
     }
 }
 
+async function refreshToken(){
+    try {
+        const refreshToken = localStorage.getItem('refresh_token')
+        const url = "https://accounts.spotify.com/api/token";
+        const payload = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + btoa(`${clientId}:${clientSecret}`)
+            },
+            body: new URLSearchParams({
+                grant_type: 'refresh_token',
+                refresh_token: refreshToken,
+              })
+        }
+
+        const response = await fetch(url, payload);
+        if (!response.ok){
+            throw new Error(`Error refreshing token: ${response.status}`)
+        }
+        const data = await response.json();
+        return data
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
 export {
     getTrack, createPlaylist, getAuthorizedToken, 
-    redirectToSpotifyAuthorize, currentToken, 
+    redirectToSpotifyAuthorize, currentToken, refreshToken,
     getCurrentUser, currentUser, getAllPlaylists, getPlaylistTracks, modifyUserPlaylist
 }

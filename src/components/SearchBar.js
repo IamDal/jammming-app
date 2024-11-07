@@ -13,7 +13,7 @@ export default function SearchBar(props) {
                         value={searchValue}
                         onChange={handleChange}
                     />
-                    <button>GO</button>
+                    <button className={style.button}>GO</button>
                 </div>
             </form>
         </>

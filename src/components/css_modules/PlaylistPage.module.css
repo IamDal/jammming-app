@@ -1,7 +1,14 @@
 .modify {
     width: 150px;
     height: 40px;
+    background-color: rgb(100, 1, 207);
+    border-radius: 20px;
+    color: white;
+    font-weight: bold;
+    border: none;
 }
+
+
 
 .imageContainer {
     display: flex;
@@ -35,11 +42,12 @@
 
 .homeContainer {
     display: flex;
+    flex: 1 1 auto;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: rgba(87, 7, 185, 0.843);
-    width: 400px;
+    background-color: rgba(87, 7, 185, 0.6);
+    width:25rem;
     margin: auto;
     margin-top: 80px;
     padding: 30px;
@@ -48,38 +56,41 @@
 }
 
 .prev, .next, .homePrev, .homeNext{
+    flex: 1 1 auto;
     cursor: pointer;
-    position: absolute;
-    top: 40%;
-    width: auto;
+    position: relative;
+    bottom: 280px;
+    width: 30px;
+    min-width: 20px;
     color: white;
+    background-color: rgb(95, 26, 160);
     transition:  0.6s ease;
-    border-radius: 0 3px 3px 0;
+    border-radius: 10px 10px 10px 10px;
+    border-style: hidden;
     font-size: 30px;
-    border: 3px 0 0 3px;
     height: 60px;
+    box-sizing: border-box;
 }
 
 .next {
-    right: 30%;
+    left: 10rem;
 }
 
 .prev {
-    left: 30%;
+    right: 10rem;
 }
 
 .homeNext {
-    right: 20%;
-    top: 50%;
+    left: 12rem;
 }
 
 .homePrev {
-    left: 60%;
-    top: 50%;
+    right: 12rem;
 }
 
-.prev:hover, .next:hover {
-    background-color: rgba(0,0,0,0.8);
+.prev:hover, .next:hover, .modify:hover {
+    background-color: rgba(54, 2, 100, 0.8);
+    cursor: pointer;
 }
 
 .container a,.homeContainer a {
@@ -88,20 +99,51 @@
     padding: 10px;
 }
 
-.container a:hover,.homeContainer a:hover {
+.container a:hover,.homeContainer a:hover, .modify:hover {
     font-weight: 600;
     transition-duration: 500ms;
 }
 
+.dots{
+    display: flex;
+    justify-content: center;
+    gap:10px
+}
+
+div.current {
+    background-color: rgb(174, 0, 255);
+}
+
+.dots div{
+    background-color: none;
+    border: 1px, gray, solid;
+    height:5px;
+    width: 5px;
+    border-radius: 5px;
+}
 
 /* Fading animation */
-.fade {
-    animation-name: fade;
-    animation: fade 1s ease-in-out;
-    animation-duration: 1.5s;
+.fadeIn {
+    animation-name: fadeIn, rotate;
+    animation: fadeIn 1.5s ease-in-out, rotate 30s linear infinite;
   }
   
-  @keyframes fade {
-    from {opacity: .4}
+  @keyframes fadeIn {
+    from {opacity: .2}
     to {opacity: 1}
+  }
+
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Apply the animation to the image */
+  .rotatingImage {
+    animation: rotate 30s linear infinite;
   }

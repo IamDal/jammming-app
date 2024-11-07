@@ -31,6 +31,12 @@
 .button {
     width: 150px;
     height: 40px;
+    border: none;
+    font-size: 16px;
+    background-color: rgb(100, 1, 207);
+    color: white;
+    font-weight: normal;
+    border-radius: 20px;
 }
 
 .container a {
@@ -41,5 +47,5 @@
 
 .container a:hover {
     font-weight: 600;
-    transition-duration: 1500ms;
+    transition: 1500ms;
 }

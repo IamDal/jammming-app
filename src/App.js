@@ -9,8 +9,8 @@ import SearchContainer from './components/SearchContainer';
 import {
 	getTrack, getAuthorizedToken, 
 	redirectToSpotifyAuthorize, currentToken,
-	getCurrentUser, getAllPlaylists
-} from "./components/spotify-requests";
+	getCurrentUser, getAllPlaylists, refreshToken
+} from "./components/SpotifyRequests";
 
  
 function App() {
@@ -105,9 +105,31 @@ function App() {
     		window.history.replaceState(
 				{}, document.title, updatedUrl
 			);
-
 			window.location.reload()
-  		}
+  		} else if(refreshToken){
+			try{
+				const token = await getAuthorizedToken(refreshToken)
+				if (!token['access_token']){
+					return
+				}
+				currentToken.save(token)
+				await getCurrentUser(token['access_token'])
+				getUserPlaylists()
+			} catch (error) {
+				console.log(error.message)
+			}
+    		// Remove code from URL so we can refresh correctly.
+    		const url = new URL(window.location.href);
+    		url.searchParams.delete("code");
+  
+    		const updatedUrl = url.search ? 
+				url.href : url.href.replace('?', '');
+
+    		window.history.replaceState(
+				{}, document.title, updatedUrl
+			);
+			window.location.reload()
+		}
 	},[])
 
 	const callUpdateToken = useCallback( async () =>{
@@ -115,6 +137,7 @@ function App() {
 		  await updateToken()
 		}
   	},[updateToken])
+
 	// Effect to get new token if none 
 	useEffect(()=>{
 		const args = new URLSearchParams(window.location.search);
@@ -124,17 +147,34 @@ function App() {
 		}
   	},[callUpdateToken])
 
+
+	const callRefreshToken = useCallback(async () => {
+		const newToken = await refreshToken();
+		return newToken;
+	}, []);
+
 	// Gets new token on expiry
 	useEffect(()=>{
-		const timer = new Date(currentToken.expires)
-		const now = new Date(Date.now())
-		if(timer < now){
-			const timeout = setTimeout(()=>{
-				updateToken()
-			}, timer)
-			return () => clearTimeout(timeout)
+		if (!currentToken.expires) return;
+
+		async function handleTokenRefresh() {
+			const timer = new Date(currentToken.expires);
+			const now = new Date(Date.now());
+	
+			if (timer - now <= 0) return; // If expired or close to expiring
+	
+			const token = await callRefreshToken(); // Wait for the token to resolve
+			if (token && token.access_token) {
+				console.log("New token:", token);
+				currentToken.save(token); // Update the token if successful
+			} else {
+				console.log("Failed to refresh token", token);
+			}
 		}
-	},[updateToken])
+	
+		handleTokenRefresh();
+	}, [activePage, callRefreshToken]);
+
 
 	useEffect(()=>{
 		if(currentToken.user){

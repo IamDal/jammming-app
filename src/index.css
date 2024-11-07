@@ -19,3 +19,7 @@ code {
 ul {
   list-style-type: none;
 }
+
+.carousel{
+  flex: 1 1 auto;
+}

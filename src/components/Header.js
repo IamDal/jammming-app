@@ -6,7 +6,9 @@ export default function Header(props) {
     return (
         <header className="App-header">
             <h1 className='title'>
-                Ja<span className='App-span'>mmm</span>ing
+                Ja<span className='App-span shake-text-a'>m</span>
+                <span className='App-span shake-text-b'>m</span>
+                <span className='App-span shake-text-c'>m</span>ing
             </h1>
             <NavBar handleLogout={handleLogout} changePage={changePage}/>
         </header>  
