@@ -69,7 +69,7 @@ export default function PlaylistPage(props) {
                 setImageIndex(0)
                 imageIndexRef.current = 0
             }
-        }, 3000)
+        }, 10000)
         return () => clearTimeout(timeoutId)
 
     },[images, imageIndex])
