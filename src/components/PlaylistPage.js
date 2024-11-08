@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react'
+import React, {useState, useEffect, useCallback, useRef} from 'react'
 import style from './css_modules/PlaylistPage.module.css'
 import logo from './Spotify_Primary_Logo_RGB_White.png'
 
@@ -9,21 +9,29 @@ export default function PlaylistPage(props) {
     } = props
 
     const [imageIndex, setImageIndex] = useState(0)
+    const imageIndexRef = useRef(imageIndex);
 
     const increaseIndex = useCallback(() => {
         if (imageIndex < images.length-1){
-            setImageIndex((prev) => prev + 1)
+            setImageIndex((prev)=> prev + 1)
         }else{
             setImageIndex(0)
         }
     },[setImageIndex, imageIndex, images])
     
-    const decreaseIndex = () => {
+    const decreaseIndex = useCallback(() => {
         if (imageIndex > 0){
-            setImageIndex((prev) => prev - 1)
+            setImageIndex((prev)=> prev - 1)
         }else{
             setImageIndex(images.length-1)
         }
+    },[imageIndex,setImageIndex,images])
+
+    function handleClick(e) {
+        const id = e.target.id
+        const selectedIndex = parseInt(id.slice(5),10)
+        setImageIndex(selectedIndex)
+        imageIndexRef.current=selectedIndex
     }
 
     function modify(e) {
@@ -45,7 +53,7 @@ export default function PlaylistPage(props) {
                 <h1 key={`h1-${i}`}>{names[i]}</h1>
                 <h4 key={`h4-${i}`}>{count[i]} Songs</h4>
                 <div key={`dots-${i}`} className={style.dots}>
-                    {names.map((name,index)=>{return index === i? <div key={`dota-${index}`} className={style.current}></div>:<div key={`dotb-${index}`}></div> })}
+                    {names.map((name,index)=>{return index === i? <div key={`dota-${index}`} id={`dota-${index}`} className={style.current}></div>:<div id={`dota-${index}`} key={`dotb-${index}`} onClick={handleClick}></div> })}
                 </div>
                 <a href={url[i]}>Listen on Spotify <img src={logo} className={style.linkLogo} alt="spotify logo"/></a>
             </div>
@@ -53,12 +61,18 @@ export default function PlaylistPage(props) {
     }
 
     useEffect(()=>{
-        const timeout = setTimeout(()=>{
-            increaseIndex()
-        },8000)
-        return () => clearTimeout(timeout)
+        const timeoutId = setTimeout(()=>{
+            if (imageIndexRef.current < images.length - 1){
+                setImageIndex(imageIndexRef.current + 1)
+                imageIndexRef.current = imageIndexRef.current + 1
+            } else {
+                setImageIndex(0)
+                imageIndexRef.current = 0
+            }
+        }, 3000)
+        return () => clearTimeout(timeoutId)
 
-    },[increaseIndex])
+    },[images, imageIndex])
 
     return (
         <div className='carousel'>

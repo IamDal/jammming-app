@@ -117,8 +117,20 @@
 
 .dots{
     display: flex;
-    justify-content: center;
-    gap:10px
+    gap:10px;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 50%;
+    padding: 5px;
+}
+
+.dots::-webkit-scrollbar {
+    height: 2px; /* Adjust scrollbar height */
+}
+
+.dots::-webkit-scrollbar-thumb {
+    background: rgb(174, 0, 255);; /* Scrollbar color */
+    border-radius: 2px;
 }
 
 div.current {
@@ -126,10 +138,11 @@ div.current {
 }
 
 .dots div{
+    flex-shrink: 0;
     background-color: none;
     border: 1px, gray, solid;
-    height:5px;
-    width: 5px;
+    height:4px;
+    width: 10px;
     border-radius: 5px;
 }
 
