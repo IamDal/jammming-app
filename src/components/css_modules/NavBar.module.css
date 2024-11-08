@@ -20,6 +20,7 @@
     cursor: pointer;
     font-size: 14px;
     font-weight: 800;
-    background-color: rgba(100, 1, 207,.5)
+    background-color: rgba(100, 1, 207,.5);
+    transition: .5s;
 }
 

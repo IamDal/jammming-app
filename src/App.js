@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Login from './components/Login';
 import MainOptions from './components/MainOptions';
 import ProfilePage from './components/ProfilePage';
@@ -17,7 +17,7 @@ function App() {
 	const [searchResults, setSearchResults] = useState([]);
 	const [searchValue, setSearchValue] = useState('');
 	const [activePage, setActivePage] = useState('Home');
-	const [playlistToModify, setPlaylistToModify] = useState('');
+	const [playlistToModify, setPlaylistToModify] = useState(null);
 	const [playlistName, setPlaylistName] = useState('');
 	// Playlist states
 	const [playlistImages, setPlaylistImages] = useState([]);
@@ -27,11 +27,40 @@ function App() {
 	const [playlistId, setPlaylistId] = useState([]);
 	const [playlistSnapshotId, setPlaylistSnapshotId] = useState([]);
 	const [currentSnapshotId, setCurrentSnapshotId] = useState('');
+	const timeoutRef = useRef(null)
+	const autoLogout = useRef(null)
 	
 	// Logs in current user
 	async function loginWithSpotifyClick() {
     	await redirectToSpotifyAuthorize();
   	}
+
+
+	const handleLogout = useCallback(()=>{
+		localStorage.clear()
+		setActivePage('login')
+		window.location.reload()
+	},[])
+
+
+	const timedLogout = useCallback(()=>{
+		if (!localStorage.user){
+			return
+		}
+		const timer  = localStorage.expires_in * 1000
+		if (timeoutRef || autoLogout){
+			clearTimeout(timeoutRef.current)
+			clearTimeout(autoLogout.current)
+		}
+		timeoutRef.current = setTimeout(()=>{
+			alert('Logging out after 5 minutes of inactivity!')
+			autoLogout.current = setTimeout(()=>{
+				handleLogout()
+			}, 18000)
+			return () => clearTimeout(autoLogout.current)
+		}, timer - 18000)
+		return () => clearTimeout(timeoutRef.current)
+	},[handleLogout])
 
 	// get all playlists
 	async function getUserPlaylists(){
@@ -92,6 +121,7 @@ function App() {
 				currentToken.save(token)
 				await getCurrentUser(token['access_token'])
 				getUserPlaylists()
+				timedLogout()
 			} catch (error) {
 				console.log(error.message)
 			}
@@ -115,6 +145,7 @@ function App() {
 				currentToken.save(token)
 				await getCurrentUser(token['access_token'])
 				getUserPlaylists()
+				timedLogout()
 			} catch (error) {
 				console.log(error.message)
 			}
@@ -130,7 +161,7 @@ function App() {
 			);
 			window.location.reload()
 		}
-	},[])
+	},[timedLogout])
 
 	const callUpdateToken = useCallback( async () =>{
 		if(currentToken.access_token === 'undefined' || !currentToken.access_token || currentToken.access_token === 'null'){
@@ -160,20 +191,21 @@ function App() {
 		async function handleTokenRefresh() {
 			const timer = new Date(currentToken.expires);
 			const now = new Date(Date.now());
-	
-			if (timer - now <= 0) return; // If expired or close to expiring
-	
-			const token = await callRefreshToken(); // Wait for the token to resolve
-			if (token && token.access_token) {
-				console.log("New token:", token);
-				currentToken.save(token); // Update the token if successful
-			} else {
-				console.log("Failed to refresh token", token);
+
+			if (!(timer - now <= 25000)) return; // If expired or close to expiring
+			try{
+				const token = await callRefreshToken(); // Wait for the token to resolve
+				if (token && token.access_token) {
+					currentToken.save(token); // Update the token if successful
+				}
+			} catch(e) {
+				console.log("Failed to refresh token", e);
 			}
 		}
 	
 		handleTokenRefresh();
-	}, [activePage, callRefreshToken]);
+		timedLogout()
+	}, [activePage, callRefreshToken, timedLogout]);
 
 
 	useEffect(()=>{
@@ -206,11 +238,6 @@ function App() {
 		newSearch()
 	}
 
-	function handleLogout(){
-		localStorage.clear()
-		setActivePage('login')
-		window.location.reload()
-	}
 
 	function goToPage (e) {
 		const pageId = e.target.id
@@ -222,6 +249,7 @@ function App() {
 		setCurrentSnapshotId(playlistSnapshotId[index])
 		setPlaylistName(playlistNames[index])
 	}
+
 
 	return (
 		<div className="App">

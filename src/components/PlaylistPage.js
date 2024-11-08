@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useCallback} from 'react'
 import style from './css_modules/PlaylistPage.module.css'
+import logo from './Spotify_Primary_Logo_RGB_White.png'
 
 export default function PlaylistPage(props) {
     const {
@@ -33,23 +34,20 @@ export default function PlaylistPage(props) {
     const playlistData = []
     for (let i = 0; i < names.length; i++){
         playlistData.push(
-            <div id='imageContainer' className={activePage==='Playlists' ? 
+            <div key={`container-${i}`} id='imageContainer' className={activePage==='Playlists' ? 
             `${style.container}`:`${style.homeContainer}`}>
-                <div className={`${style.imageContainer}`}>
+                <div key={`image-${i}`} className={`${style.imageContainer}`}>
                     {images === 'null'? 
                         <h1>blank Image</h1> 
                         : <img className={i===imageIndex? `${style.fadeIn}`:''} 
                         key={i} alt='Playlist Album Covers' src={images[i]}/>}
                 </div>
-                <h1>{names[i]}</h1>
-                <h4>{count[i]} Songs</h4>
-                <div className={style.dots}>
-                    {names.map((name,index)=>{return index === i? <div className={style.current}></div>:<div></div> })}
+                <h1 key={`h1-${i}`}>{names[i]}</h1>
+                <h4 key={`h4-${i}`}>{count[i]} Songs</h4>
+                <div key={`dots-${i}`} className={style.dots}>
+                    {names.map((name,index)=>{return index === i? <div key={`dota-${index}`} className={style.current}></div>:<div key={`dotb-${index}`}></div> })}
                 </div>
-                <a href={url[i]}>Listen on Spotify</a>
-                <button className={style.modify} 
-                    id={'modify'} 
-                     onClick={modify}>Modify playlist</button>
+                <a href={url[i]}>Listen on Spotify <img src={logo} className={style.linkLogo} alt="spotify logo"/></a>
             </div>
         )
     }
@@ -65,13 +63,19 @@ export default function PlaylistPage(props) {
     return (
         <div className='carousel'>
             {playlistData[imageIndex]}
-            <button className={activePage === 'Playlists' ? 
-                `${style.prev}` : `${style.homePrev}`} 
-                onClick={decreaseIndex}>&#10094;</button>
+            <button className={style.modify} 
+                    id={'modify'} 
+                    onClick={modify}>Modify playlist</button>
+            <div>
+                <button className={activePage === 'Playlists' ? 
+                    `${style.prev}` : `${style.homePrev}`} 
+                    onClick={decreaseIndex}>&#10094;</button>
 
-            <button className={activePage === 'Playlists' ? 
-                `${style.next}` : `${style.homeNext}`} 
-                onClick={increaseIndex}>&#10095;</button>
+                <button className={activePage === 'Playlists' ? 
+                    `${style.next}` : `${style.homeNext}`} 
+                    onClick={increaseIndex}>&#10095;</button>
+            </div>
+
         </div>
     )
   

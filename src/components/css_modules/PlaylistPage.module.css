@@ -17,13 +17,19 @@
     border-radius: 100px;
     background-color: none;
     color: blueviolet;
-    font-size: 40px;
+    background-image: radial-gradient(rgba(62, 4, 117, 0.972), rgba(24, 1, 42, 0));
+    font-size: 20px;
     justify-content: center;
     align-items: center;
 }
 
 .imageContainer img {
- border-radius: 100px;
+ border-radius: 50%;
+ object-fit: fill;
+ height: 100%;
+ width: 100%;
+ line-height: 50px;
+ text-align: center;
 }
 
 .container {
@@ -31,13 +37,17 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: rgba(63, 14, 131, 0.843);
+    /*background-color: rgba(63, 14, 131, 0.843);*/
+    background-image: radial-gradient(closest-side at 50% 50%,rgba(62, 4, 117, 0.69)70%, rgba(62, 4, 117, 0.285));
     width: 400px;
     margin: auto;
     margin-top: 80px;
     padding: 30px;
     border-radius: 50%;
     color: white;
+    animation-name: fadeIn;
+    animation: fadeIn .5s ease-in-out;
+    
 }
 
 .homeContainer {
@@ -88,8 +98,9 @@
     right: 12rem;
 }
 
-.prev:hover, .next:hover, .modify:hover {
+.prev:hover, .next:hover, .modify:hover,.homePrev:hover, .homeNext:hover {
     background-color: rgba(54, 2, 100, 0.8);
+    transition: .5s;
     cursor: pointer;
 }
 
@@ -101,7 +112,7 @@
 
 .container a:hover,.homeContainer a:hover, .modify:hover {
     font-weight: 600;
-    transition-duration: 500ms;
+    transition: .5s;
 }
 
 .dots{
@@ -120,6 +131,11 @@ div.current {
     height:5px;
     width: 5px;
     border-radius: 5px;
+}
+
+.linkLogo {
+    width: 15px;
+    height: 15px;
 }
 
 /* Fading animation */

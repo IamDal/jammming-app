@@ -11,7 +11,7 @@ export default function Login({handleClick}){
                 <span className='App-span shake-text-c'>m</span>ing
             </h1>
             <p>powered by</p>
-            <img className={style.spotifyImage}src={images} alt='Spotify logo'/>
+            <img className={style.spotifyImage} src={images} alt='Spotify logo'/>
             <button className={style.loginButton} onClick={handleClick}>Login</button>
         </div>
 

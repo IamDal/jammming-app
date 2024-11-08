@@ -4,23 +4,33 @@ import style from './css_modules/Playlist.module.css'
 export default function Playlist (props) {
 
   const {
-    handleSubmit, playlistName, 
-    handleChange, selectionList
+    handleSubmit, playlistName, handleSubmitPlaylist,dragoverHandler,
+    handleChange, selectionList,page, modifiedList,dropHandler
   } = props
 
-  return(
-    <>
-        <form onSubmit={handleSubmit}>
+  const formId = ['New-Playlist', 'Modify-Playlist']
+  const content = (
+        <>
             <input className={style.input} type='text' 
-                placeholder='New Playlist' value={playlistName} 
-                onChange={handleChange}/>
+            placeholder='Playlist Name' value={playlistName} 
+            onChange={handleChange}/>
+
             <div className={style.container}>
-                <ul>
-                    {selectionList}
+                <ul id='target' onDrop={dropHandler} onDragOver={dragoverHandler}>
+                    {page === 'new'? selectionList:modifiedList}
                 </ul>
             </div>
-            <button className={style.button}>Create New Playlist</button>
-        </form>
-    </>
+
+            <button className={style.button}>
+                {page === 'new'?'Create New Playlist':'Modify Playlist'}
+            </button>
+        </>
+    )
+
+  return(
+    <form id={formId[page === 'new' ? 0 : 1]} 
+          onSubmit={page === 'new' ? handleSubmit : handleSubmitPlaylist}>
+        {content}
+    </form>
   )
 }

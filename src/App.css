@@ -60,6 +60,10 @@
   color:rgb(100, 1, 207);
 }
 
+.App-span:hover{
+  cursor: pointer;
+}
+
 .logout {
   height: 30px;
   width: 80px;

@@ -2,7 +2,6 @@ import React, {useState, useEffect, useCallback} from "react";
 import Tracklist from './Tracklist';
 import Playlist from './Playlist';
 import Track from "./Track";
-import ModifyPlaylist from './ModifyPlaylist';
 import { createPlaylist, getPlaylistTracks, modifyUserPlaylist } from "./SpotifyRequests";
 
 
@@ -15,6 +14,7 @@ export default function SearchResults(props) {
     const [currentPlaylistName, setCurrentPlaylistName ] = useState(playlistName)
     const [tracklist, setTracklist] = useState([])
     const [selectionList, setSelectionList] = useState([])
+    const [modifiedSelectionList, setModifiedSelectionList] = useState([])
     const [playlistTracks, setPlaylistTracks] = useState([])
     const [tracksCopy, setTracksCopy] = useState([])
     const [modifiedUris, setModifiedUris] = useState([])
@@ -24,11 +24,11 @@ export default function SearchResults(props) {
     const updateModifiedList = useCallback(() => {
         const list = document.getElementById('target')
         let uris = []
-        for (const child of list.children){
+        for (let child of list.children){
             uris.push(child.id)
         }
         setModifiedUris(uris)
-    },[])
+    },[setModifiedUris])
 
     // Define dragging Functionality
 	function dragstartHandler(e){
@@ -81,15 +81,9 @@ export default function SearchResults(props) {
 
 
     useEffect(()=>{
-        fetchTracks()
+        if(playlistToModify)
+            fetchTracks()
     },[playlistToModify, fetchTracks])
-
-
-    useEffect(()=>{
-        if(activePage !== "new"){
-            updateModifiedList()
-        }
-    },[activePage, updateModifiedList, tracksCopy])
 
 
     const getTrackModifications = useCallback(()=>{
@@ -170,7 +164,7 @@ export default function SearchResults(props) {
             })
             return selectionUpdate
         })
-    },[])
+    },[setSelection])
 
     const removeFromExistingPlaylist = useCallback((e) => {
         e.preventDefault()
@@ -181,7 +175,7 @@ export default function SearchResults(props) {
             })
             return selectionUpdate
         })
-    },[])
+    },[setTracksCopy])
 
     // Returns a list of tracks from search
     const updateTracklist = useCallback(() => {
@@ -209,7 +203,9 @@ export default function SearchResults(props) {
         setSelectionList(()=>{
             const newSelection = selection.map((track)=>{
                 return (
-                    <li key={track.uri}>
+                    <li id={track.uri} key={track.uri}
+                        draggable="true" onDragStart={dragstartHandler}
+                        onDragEnter={dragEnter} onDragLeave={dragLeave}>
                         <Track track={track} buttonValue='-' prefix=''
                             handleSongUpdate={removeSong} setNowPlaying={setNowPlaying}/>
                     </li>
@@ -218,6 +214,22 @@ export default function SearchResults(props) {
             return newSelection
         })
     },[selection,removeSong])
+
+    const updateModifiedSelection = useCallback(()=>{
+        setModifiedSelectionList(()=>{
+            const modification = tracksCopy.map((track) => { 
+                return ( 
+                    <li id={track.uri} key={track.uri}
+                        draggable="true" onDragStart={dragstartHandler}
+                        onDragEnter={dragEnter} onDragLeave={dragLeave}>
+                        <Track track={track} buttonValue="-" prefix=''
+                            handleSongUpdate={removeFromExistingPlaylist} setNowPlaying={setNowPlaying}/>
+                    </li>
+                )
+            })
+            return modification
+        })
+    },[tracksCopy, removeFromExistingPlaylist]) 
 
     // Effect updates track list on change
     useEffect(()=>{
@@ -230,6 +242,16 @@ export default function SearchResults(props) {
     },[selection, updateSelectionList])
 
     useEffect(()=>{
+        updateModifiedSelection()
+    },[tracksCopy, updateModifiedSelection])
+
+    useEffect(()=>{
+        if(modifiedSelectionList){
+            updateModifiedList()
+        }
+    },[modifiedSelectionList,updateModifiedList])
+
+    useEffect(()=>{
         if(searchValue === ''){
             setNowPlaying("")
         }
@@ -239,22 +261,15 @@ export default function SearchResults(props) {
         <>
             <div className="App-container">
                 <Tracklist tracklist={tracklist} handleClick={addSong}/>
-                {activePage === 'new' && 
-                    <Playlist selectionList={selectionList} handleSubmit={handleFormSubmit} 
-                        playlistName= {playlistName} handleChange={onChange}/>}
-                {activePage === 'modify' && 
-                    <ModifyPlaylist removeSong={removeFromExistingPlaylist} 
-                        handleSubmit={submitPlaylist} setNowPlaying={setNowPlaying}
-                        dragstartHandler={dragstartHandler} dragoverHandler={dragoverHandler}
-                        dropHandler={dropHandler} dragEnter={dragEnter}
-                        dragLeave={dragLeave} handleChange={onChange}
-                        playlistName= {playlistName} tracksCopy={tracksCopy}
-                    />}
+                <Playlist selectionList={selectionList} modifiedList={modifiedSelectionList} handleSubmit={handleFormSubmit} 
+                    playlistName= {playlistName} handleChange={onChange} handleSubmitPlaylist={submitPlaylist} page={activePage}
+                    dropHandler={dropHandler} dragoverHandler={dragoverHandler} updateModifiedList={updateModifiedList}
+                    />
             </div>
             <div>
-                {nowPlaying && <iframe title="Media Player" src={`https://open.spotify.com/embed/track/${nowPlaying}`} 
-                    width="80%" height="100" frameborder="0"
-                    allowtransparency="true" allow="encrypted-media"></iframe>}
+            {nowPlaying && <iframe title="Media Player" src={`https://open.spotify.com/embed/track/${nowPlaying}`} 
+                width="80%" height="100" frameBorder="0"
+                allowtransparency="true" allow="encrypted-media"></iframe>}
             </div>
         </>
     )

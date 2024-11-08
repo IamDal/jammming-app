@@ -8,13 +8,7 @@ const redirectUri = 'http://localhost:3000';
 const tokenType="Bearer"
 const accessToken = localStorage.getItem('access_token');
 
-const base64encode = (input) => {
-    return btoa(String.fromCharCode(...new Uint8Array(input)))
-      .replace(/=/g, '')
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_');
-  }
-
+  // Stores the Access Token response in local variable
 const currentToken = {
     get user () {
         return localStorage.getItem('user') || null;
@@ -100,23 +94,22 @@ const currentToken = {
         localStorage.setItem('spotify_url', this._spotifyURL)
         console.log(`url updated!`)
     },
-
   }
 
-
+// Calls Spotify API for a list of tracks
 async function getTrack(searchTerm) {
     const query = `search?q=${encodeURIComponent(searchTerm)}&type=track`
-    const limit = "&limit=30"
+    const limit = "&limit=50"
     const urlToFetch = apiURL+query+limit
     const headers = { "Authorization":`${tokenType} ${accessToken}` }
 
     try {
         const response = await fetch(urlToFetch, { headers });
         if (!response.ok) {
-            throw new Error(`Response Status: ${response.status}`)
+            throw new Error(`Error loading tracks: ${response.status}`)
         }
-        const responseAsJson = await response.json()
-        const trackData = await responseAsJson['tracks']['items']
+        const data = await response.json()
+        const trackData = await data['tracks']['items']
 
         const tracks = trackData.map(items => {
             const albumCover = items['album']['images'].slice(-1)[0]
@@ -139,20 +132,27 @@ async function getTrack(searchTerm) {
     }
 }
 
-
+// Makes the relevant API calls to update Existing Playlist
 async function modifyUserPlaylist(playlistObject){
-    if (playlistObject.added.length > 0){
-        await addTracksToPlaylist(playlistObject.added, playlistObject.playlistId)
+    const addedTracks = playlistObject.added
+    const removedTracks = playlistObject.removed
+    const playlistId = playlistObject.playlistId
+    const sortedURI = playlistObject.sorted
+    const snapshotId = playlistObject.snapshotId
+
+    if (addedTracks.length > 0){
+        await addTracksToPlaylist(addedTracks, playlistId)
     }
-    if (playlistObject.removed.length > 0){
-        await removeTracksFromPlaylist(playlistObject.removed, playlistObject.playlistId, playlistObject.snapshotId)
+    if (removedTracks.length > 0){
+        await removeTracksFromPlaylist(removedTracks, playlistId, snapshotId)
     }
     if (playlistObject.name !== playlistObject.newName){
-        await updatePlaylistName(playlistObject.playlistId, playlistObject.newName)
+        await updatePlaylistName(playlistId, playlistObject.newName)
     }
-    await updateTracks(playlistObject.sorted, playlistObject.playlistId)
+    await updateTracks(sortedURI, playlistId)
 }
 
+// Calls Spotify API for a specific Playlist(In this case the latest playlist)
 async function getPlaylist(playlistId){
     const endpoint = apiURL + `playlists/${await playlistId}`
     const headers = {             
@@ -160,23 +160,23 @@ async function getPlaylist(playlistId){
     }
     try {
         const response = await fetch(endpoint,{
-            method: "GET",
-            headers
+            method: "GET", headers
         })
         if (!response.ok){
             throw new Error(`Error if request: ${response.status}`)
         }
-        const responseAsJson = await response.json()
-        const playlistUris = responseAsJson["tracks"]["items"].map(item => item["track"]["uri"])
+        const data = await response.json()
+        const playlistUris = data["tracks"]["items"].map(item => item["track"]["uri"])
         return {
             uri: playlistUris,
-            snapshotId: responseAsJson["snapshot_id"],
+            snapshotId: data["snapshot_id"],
         }
     } catch (error) {
         console.log(error)
     }
 }
 
+// Calls Spotify API and replaces a specific playlist name
 async function updatePlaylistName(playlistId, nameOfPlaylist) {
     const endpoint = apiURL + `playlists/${playlistId}`
     const headers = {             
@@ -197,14 +197,15 @@ async function updatePlaylistName(playlistId, nameOfPlaylist) {
         if(!response.ok){
             throw new Error(`Error renaming playlist: ${response.status}`)
         }
-        console.log('Name Changed successful')
+        alert('Name Changed successful')
     } catch (error) {
         console.log(error.message)
     }
 }
 
-async function updateTracks( final, playlistId) {
-    let updatedPlaylist = await getPlaylist(playlistId)
+// Calls Spotify API and reorders the tracks
+async function updateTracks(final, playlistId) {
+    const updatedPlaylist = await getPlaylist(playlistId)
     const moveList = getUpdatedTrackLocations(updatedPlaylist.uri, final)
     if(JSON.stringify(updatedPlaylist.uri) === JSON.stringify(final)){
         return
@@ -234,13 +235,11 @@ async function updateTracks( final, playlistId) {
         } catch (error) {
             console.log(error)
         }
-        console.log(move)
-        console.log(updatedPlaylist.snapshotId)
     }
     alert('Songs Updated Successfully')
 }
 
-
+// Calls Spotify API and removes tracks from an existing playlist
 async function removeTracksFromPlaylist(urisToRemove, playlistId, snapshotId){
     const endpoint = apiURL + `playlists/${playlistId}/tracks`
     const headers = {             
@@ -270,7 +269,7 @@ async function removeTracksFromPlaylist(urisToRemove, playlistId, snapshotId){
     }
 }
 
-
+// Calls Spotify API for the tracks in a specific playlist
 async function getPlaylistTracks(playlistId) {
     const endpoint = apiURL + `playlists/${playlistId}/tracks`
     const headers = { "Authorization":`${tokenType} ${accessToken}` }
@@ -314,7 +313,7 @@ async function getPlaylistTracks(playlistId) {
     }
 }
 
-
+// Calls Spotify API for the current user details
 async function getCurrentUser(accessToken) {
     if (!localStorage.userName){
         const endpoint = apiURL + "me"
@@ -328,17 +327,17 @@ async function getCurrentUser(accessToken) {
                 throw new Error(`Error: ${response.status}`)
             }
             
-            const responseAsJson = await response.json()
-            currentUser.setUserName(responseAsJson['display_name'])
-            currentUser.setUserId(responseAsJson['id'])
-            if (responseAsJson['images'].length === 0){
+            const data = await response.json()
+            currentUser.setUserName(data['display_name'])
+            currentUser.setUserId(data['id'])
+            if (data['images'].length === 0){
                 currentUser.setProfileImage(null)
             } else {
-                currentUser.setProfileImage(responseAsJson['images'][0]['url'])
+                currentUser.setProfileImage(data['images'][0]['url'])
             }
-            currentUser.setCountry(responseAsJson['country'])
-            currentUser.setFollowers(responseAsJson['followers']['total'])
-            currentUser.setSpotifyURL(responseAsJson['external_urls']['spotify'])
+            currentUser.setCountry(data['country'])
+            currentUser.setFollowers(data['followers']['total'])
+            currentUser.setSpotifyURL(data['external_urls']['spotify'])
             return currentUser
         } catch (error) {
             console.log(error.message)
@@ -346,7 +345,7 @@ async function getCurrentUser(accessToken) {
     }
 }
 
-
+// Calls Spotify API to create a playlist
 async function createPlaylist(nameOfPlaylist, tracks) {
     try {
         const user = await getCurrentUser(accessToken)
@@ -365,11 +364,9 @@ async function createPlaylist(nameOfPlaylist, tracks) {
         const response = await fetch(endpoint, {
             method:"POST", headers, body
         })
-
         if(!response.ok) {
             throw new Error(`Error: ${response.status}`)
         }
-
         try {
             const playlistId = await getPlaylistId(nameOfPlaylist)
             await addTracksToPlaylist(tracks, playlistId)
@@ -382,7 +379,7 @@ async function createPlaylist(nameOfPlaylist, tracks) {
     }
 }
 
-
+// Calls Spotify API to get all current users playlist
 async function getAllPlaylists() {
     const endpoint = apiURL + 'me/playlists'
     const headers = {             
@@ -400,7 +397,7 @@ async function getAllPlaylists() {
     }
 }
 
-
+// Calls Spotify API retrieve a specific playlist id
 async function getPlaylistId(playlistName) {
     const endpoint = apiURL + 'me/playlists'
     const headers = {             
@@ -421,7 +418,7 @@ async function getPlaylistId(playlistName) {
     }
 }
 
-
+// Calls Spotify API to add tracks to a playlist
 async function addTracksToPlaylist(tracks, playlistId) {
     const endpoint = apiURL + `playlists/${await playlistId}/tracks`
     const headers = {             
@@ -447,11 +444,19 @@ async function addTracksToPlaylist(tracks, playlistId) {
 }
 
 // implement authorization tokens
+// Redirect to spotify to get authorization code
 async function redirectToSpotifyAuthorize() {
     const generateRandomString = (length) => {
         const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         const values = crypto.getRandomValues(new Uint8Array(length));
         return values.reduce((acc, x) => acc + possible[x % possible.length], "");
+    }
+
+    const base64encode = (input) => {
+        return btoa(String.fromCharCode(...new Uint8Array(input)))
+          .replace(/=/g, '')
+          .replace(/\+/g, '-')
+          .replace(/\//g, '_');
     }
 
     const sha256 = async (plain) => {
@@ -479,7 +484,8 @@ async function redirectToSpotifyAuthorize() {
     authUrl.search = new URLSearchParams(params).toString();
     window.location.href = authUrl.toString();
 }
-    
+
+// Call spotify token url to get access token
 async function getAuthorizedToken(code) {
     try {
         const code_verifier = localStorage.getItem('code_verifier');
@@ -507,6 +513,7 @@ async function getAuthorizedToken(code) {
     }
 }
 
+// refresh spotify token
 async function refreshToken(){
     try {
         const refreshToken = localStorage.getItem('refresh_token')

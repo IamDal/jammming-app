@@ -28,6 +28,13 @@
     font-weight: bold;
 }
 
+.button:hover{
+    background-color: rgb(42, 0, 87);
+    font-size: 14px;
+    transition: .25s;
+    cursor: pointer;
+}
+
 ::placeholder {
     color: rgb(177, 143, 200);
     text-align: center;

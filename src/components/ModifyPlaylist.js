@@ -12,7 +12,7 @@ export default function ModifyPlaylist(props) {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
+            <form id='Modify-Playlist' name='Modify-Playlist' onSubmit={handleSubmit}>
                 <input className={style.input} type='text' placeholder='Name'  
                     value={playlistName} onChange={handleChange}/>
                 <div className={style.container}>
@@ -34,3 +34,4 @@ export default function ModifyPlaylist(props) {
         </>
     )
 }
+

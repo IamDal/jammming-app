@@ -2,7 +2,7 @@
     display: flex;
     height: 37.5rem;
     width:37.5rem;
-    background-color: rgba(62, 4, 117, 0.684);
+    background-image: linear-gradient(rgba(62, 4, 117, 0.972), rgba(24, 1, 42, 0));
     border-radius: 300px;
     align-items: center;
     justify-content: center;
@@ -14,6 +14,8 @@
     flex: 1 1 auto;
     justify-content: space-around;
     flex-wrap: wrap;
+    animation-name: fadeIn;
+    animation: fadeIn .5s ease-in-out;
 }
 
 .optionsH1 {
@@ -22,7 +24,12 @@
 
 .optionsH1:hover {
     color: white;
-    font-size: 50px;
+    font-size: 40px;
     transition-duration: 500ms;
     cursor: pointer;
 }
+  
+  @keyframes fadeIn {
+    from {opacity: .2}
+    to {opacity: 1}
+  }

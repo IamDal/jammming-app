@@ -26,16 +26,18 @@
     padding: 30px;
     border-radius: 300px;
     color: white;
+    animation-name: fadeIn;
+    animation: fadeIn .5s ease-in-out;
 }
 
 .button {
-    width: 150px;
+    width: 200px;
     height: 40px;
     border: none;
     font-size: 16px;
     background-color: rgb(100, 1, 207);
     color: white;
-    font-weight: normal;
+    font-weight: 100;
     border-radius: 20px;
 }
 
@@ -45,7 +47,24 @@
     padding: 10px;
 }
 
-.container a:hover {
-    font-weight: 600;
-    transition: 1500ms;
+.button a:hover {
+    font-weight: 400;
+    font-size: 18px;
+    transition: 1s;
 }
+
+.button:hover{
+    background-color: rgba(54, 2, 100, 0.8);
+    transition: .5s;
+    cursor: pointer;
+}
+
+.linkLogo {
+    width: 15px;
+    height: 15px;
+}
+
+@keyframes fadeIn {
+    from {opacity: .2}
+    to {opacity: 1}
+  }

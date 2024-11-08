@@ -1,5 +1,7 @@
 import React from 'react'
 import style from './css_modules/ProfilePage.module.css'
+import logo from './Spotify_Primary_Logo_RGB_White.png'
+
 export default function ProfilePage() {
     const image = localStorage.getItem('img_url')
     const user = localStorage.getItem('user')
@@ -27,7 +29,7 @@ export default function ProfilePage() {
                 {followerCount}
             </h4>
             <button className={style.button}>
-                <a href={url}>see on spotify</a>
+                <a href={url}>see on spotify <img src={logo} className={style.linkLogo} alt="spotify logo"/></a>
             </button>
         </div>
     )
