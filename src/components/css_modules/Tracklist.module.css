@@ -16,3 +16,21 @@
     overflow-y: scroll;
     margin-bottom: 50px;
 }
+
+@media screen and (max-width: 579px) {
+    ul {
+        padding-left: 10px;
+    }
+
+    .container {
+        display: block;
+        width: 50%;
+    }
+    .results {
+        display: block;
+        width: 90%;
+        height: 400px;
+        overflow-y: scroll;
+        margin-bottom: 50px;
+    }
+}

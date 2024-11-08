@@ -106,3 +106,28 @@
   display: inline-block;
   animation: shake 0.45s ease-in-out infinite;
 }
+
+@media screen and (max-width: 579px) {
+  .App-header {
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(6px + 2vmin);
+    color: white;
+    border-bottom: 1px gray solid;
+    margin-bottom: 10px;
+    width:80%;
+  }
+
+  .title h1{
+    margin: 10px;
+    font-size: 2.9rem;
+  }
+
+  #Modify-Playlist{
+    width: 50%;
+}
+  
+}

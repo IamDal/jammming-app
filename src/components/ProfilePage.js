@@ -25,9 +25,9 @@ export default function ProfilePage() {
             <p>
                 Followers
             </p>
-            <h4>
+            <h3>
                 {followerCount}
-            </h4>
+            </h3>
             <button className={style.button}>
                 <a href={url}>see on spotify <img src={logo} className={style.linkLogo} alt="spotify logo"/></a>
             </button>

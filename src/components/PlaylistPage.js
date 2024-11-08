@@ -69,7 +69,7 @@ export default function PlaylistPage(props) {
                 setImageIndex(0)
                 imageIndexRef.current = 0
             }
-        }, 10000)
+        }, 1000000)
         return () => clearTimeout(timeoutId)
 
     },[images, imageIndex])
@@ -79,7 +79,7 @@ export default function PlaylistPage(props) {
             {playlistData[imageIndex]}
             <button className={style.modify} 
                     id={'modify'} 
-                    onClick={modify}>Modify playlist</button>
+                    onClick={modify}>Modify Playlist</button>
             <div>
                 <button className={activePage === 'Playlists' ? 
                     `${style.prev}` : `${style.homePrev}`} 

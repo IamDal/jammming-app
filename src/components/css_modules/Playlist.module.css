@@ -35,3 +35,13 @@ input {
     max-height: 450px;
     overflow-y: scroll;
 }
+
+@media screen and (max-width: 579px) {
+    .container {
+        display: block;
+        width: 90%;
+        max-height: 450px;
+        overflow-y: scroll;
+    }
+
+}

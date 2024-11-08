@@ -11,9 +11,13 @@
     background-color: rgba(223, 223, 223, 0);
     height: 30px;
     border-radius: 25px;
-    width: 100px;
+    width: 140%;
     border: none;
     font-weight: bold;
+}
+
+nav ul{
+    padding-left: 0;
 }
 
 .buttons:hover{
@@ -22,5 +26,21 @@
     font-weight: 800;
     background-color: rgba(100, 1, 207,.5);
     transition: .5s;
+}
+
+@media screen and (max-width: 579px) {
+    .menu {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        font-size: 1rem;
+        font-weight: 100;
+        width: 80%;
+    }
+
+    li#Playlists{
+        display: none;
+    }
+    
 }
 

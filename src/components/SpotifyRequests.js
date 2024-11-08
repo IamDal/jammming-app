@@ -4,7 +4,7 @@ const clientId = process.env.REACT_APP_CLIENT_ID;
 const clientSecret = process.env.REACT_APP_CLIENT_SECRET;
 const tokenURL = "https://accounts.spotify.com/api/token";
 const apiURL = "https://api.spotify.com/v1/";
-const redirectUri = 'https://jammmingwithdal.netlify.app/'//'http://localhost:3000';
+const redirectUri = 'http://localhost:3000'//'https://jammmingwithdal.netlify.app/'//;
 const tokenType="Bearer"
 const accessToken = localStorage.getItem('access_token');
 

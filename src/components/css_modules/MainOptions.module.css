@@ -33,3 +33,16 @@
     from {opacity: .2}
     to {opacity: 1}
   }
+
+  @media screen and (max-width: 579px) {
+    .options {
+        display: flex;
+        width:37.5rem;
+        height: auto;
+        background-image: linear-gradient(rgba(62, 4, 117, 0.972), rgba(24, 1, 42, 0));
+        border-radius: 300px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 120px;
+    }
+  }
