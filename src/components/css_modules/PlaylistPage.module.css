@@ -12,13 +12,13 @@
 
 .imageContainer {
     display: flex;
-    height: 200px;
-    width: 200px;
+    height: auto;
+    width: 30%;
     border-radius: 100px;
     background-color: none;
     color: blueviolet;
     background-image: radial-gradient(rgba(62, 4, 117, 0.972), rgba(24, 1, 42, 0));
-    font-size: 20px;
+    font-size: 1.25rem;
     justify-content: center;
     align-items: center;
 }
@@ -39,7 +39,8 @@
     justify-content: center;
     /*background-color: rgba(63, 14, 131, 0.843);*/
     background-image: radial-gradient(closest-side at 50% 50%,rgba(62, 4, 117, 0.69)70%, rgba(62, 4, 117, 0.285));
-    width: 400px;
+    width: 22vw;
+    height: 22vw;
     margin: auto;
     margin-top: 80px;
     padding: 30px;
@@ -51,50 +52,54 @@
 
 .homeContainer {
     display: flex;
-    flex: 1 1 auto;
+    /*flex: 1 1 auto;*/
+    justify-self: center;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: rgba(87, 7, 185, 0.6);
-    width:25rem;
-    margin: auto;
-    margin-top: 80px;
-    padding: 30px;
+    width:90%;
+    height: 90%;
     border-radius: 50%;
     color: white;
+}
+
+.carouselButtons {
+    position: absolute;
+    bottom: 50%;
+    right: 50%;
 }
 
 .prev, .next, .homePrev, .homeNext{
     flex: 1 1 auto;
     cursor: pointer;
-    position: relative;
-    bottom: 280px;
-    width: 30px;
+    position: absolute;
+    width: 1.5vw;
     min-width: 20px;
     color: white;
     background-color: rgb(95, 26, 160);
     transition:  0.6s ease;
     border-radius: 10px 10px 10px 10px;
     border-style: hidden;
-    font-size: 30px;
-    height: 60px;
+    font-size: 1.5vw;
+    height: 3vw;
     box-sizing: border-box;
 }
 
 .next {
-    left: 10rem;
+    left: 10vw;
 }
 
 .prev {
-    right: 10rem;
+    right: 10vw;
 }
 
 .homeNext {
-    left: 12rem;
+    left: 10vw;
 }
 
 .homePrev {
-    right: 12rem;
+    right: 10vw;
 }
 
 .prev:hover, .next:hover, .modify:hover,.homePrev:hover, .homeNext:hover {
@@ -107,6 +112,8 @@
     text-decoration: none;
     color: white;
     padding: 10px;
+    font-size: clamp(.5rem, 1vw + .8rem, .4vw + .7rem);
+    margin: 1%;
 }
 
 .container a:hover,.homeContainer a:hover, .modify:hover {
@@ -121,6 +128,7 @@
     white-space: nowrap;
     width: 50%;
     padding: 5px;
+    margin: 1%;
 }
 
 .dots::-webkit-scrollbar {
@@ -143,11 +151,31 @@ div.current {
     height:4px;
     width: 10px;
     border-radius: 5px;
+    margin: auto;
 }
 
 .linkLogo {
     width: 15px;
     height: 15px;
+}
+
+.carousel{
+    position: relative;
+    flex: 1 1 auto;
+    display: block;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+
+.carousel h1 {
+    font-size: clamp(1.5rem, 2vw, 3rem);
+    margin: 2%;
+}
+
+.carousel h4 {
+    font-size: clamp(.5rem, 1.5rem, 1rem);
+    margin: 2%;
 }
 
 /* Fading animation */
@@ -176,12 +204,16 @@ div.current {
     animation: rotate 30s linear infinite;
   }
 
+
+  @media screen and (max-width: 850px) {
+    .carousel h4 {
+        display: none;
+    }
+  }
+
   @media screen and (max-width: 579px) {
     .imageContainer {
         display: flex;
-        height: 8rem;
-        width: 8rem;
-        border-radius: 100px;
         background-color: none;
         color: blueviolet;
         background-image: radial-gradient(rgba(62, 4, 117, 0.972), rgba(24, 1, 42, 0));
@@ -206,60 +238,67 @@ div.current {
         align-items: center;
         justify-content: center;
         background-color: transparent;
-        width:auto;
-        margin-top: 300px;
+        width:60vw;
+        height:60vw;
+        margin-top: 25vw;
         border-radius: 50%;
         color: white;
     }
 
-    h4 {
+    .carousel h4 {
         display: none;
     }
 
+
     .homeContainer {
-        margin-top: 10px;
         display: flex;
-        flex: 1 1 auto;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         background-color: transparent;
-        width:auto;
-        margin-top: 10%;
-        border-radius: 50%;
+        width:60vw;
+        height: 60vw;
+        border-radius: 30vw;
         color: white;
+        min-width: 16rem;
     }
 
     .homeNext {
-        left: 8rem;
+        left: 22vw;
     }
     
     .homePrev {
-        right: 8rem;
+        right: 22vw;
+    }
+
+    .next {
+        left: 22vw;
+    }
+    
+    .prev {
+        right: 22vw;
     }
 
     .prev, .next, .homePrev, .homeNext{
-        flex: 1 1 auto;
         cursor: pointer;
-        position: relative;
-        bottom: 160px;
-        width: 2rem;
+        position: absolute;
         color: white;
         background-color: transparent;
-        transition:  0.6s ease;
-        border-radius: 10px 10px 10px 10px;
-        border-style: hidden;
         font-size: 30px;
-        height: 60px;
         box-sizing: border-box;
     }
 
-    .modify {
-        position: absolute;
+    
+}
+
+
+/*
+    .carousel .modify {
+        position: relative;
+        bottom:85vw;
         margin-top: 10px;
-        top:320px;
-        width: 80%;
-        height: 80px;
+        width: 70vw;
+        height: 5rem;
         background-color: transparent;
         background-image: linear-gradient(rgba(62, 4, 117, 0.972), rgba(24, 1, 42, 0));
         font-size: 32px;
@@ -267,7 +306,9 @@ div.current {
         color: rgb(194, 172, 231);
         font-weight: bold;
         border: none;
+        text-wrap: nowrap;
+        font-size: clamp(1.5rem, 2vw, 3rem);
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        min-width: 16rem;
     }
-    
-}
+*/

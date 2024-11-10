@@ -1,7 +1,7 @@
 .container {
     display: flex;
     flex-direction: column;
-    min-height: 800px;
+    min-height: 400px;
     color:white;
     align-items: center;
     justify-content: center;
@@ -10,17 +10,19 @@
 
 .loginH1 {
     text-shadow: 5px 5px rgb(27, 84, 133);
+    min-width: 0;
+    white-space: nowrap;
 }
 
 p {
-    font-size: 1rem;
+    font-size: 1.5vw;
 }
 
 .loginButton {
-    width: 200px;
-    height: 40px;
+    width: 12.5rem;
+    height: 2.5rem;
     border: none;
-    font-size: 20px;
+    font-size: 1.25rem;
     background-color: rgb(100, 1, 207);
     color: white;
     font-weight: bold;
@@ -34,8 +36,8 @@ p {
 }
 
 .spotifyImage {
-    width: 10%;
-    height: 10%;
+    width: 10vw;
+    height: auto;
     margin-bottom: 3rem;
 }
 
@@ -56,8 +58,19 @@ p {
     }
 
     .spotifyImage {
-        width: 30%;
-        height: 30%;
+        width: 30vw;
+        height: auto;
         margin-bottom: 3rem;
+    }
+
+    .loginButton {
+        width: 40vw;
+        height: 2.5rem;
+        border: none;
+        font-size: 1.25rem;
+        background-color: rgb(100, 1, 207);
+        color: white;
+        font-weight: bold;
+        border-radius: 20px;
     }
 }

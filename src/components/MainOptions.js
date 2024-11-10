@@ -10,10 +10,10 @@ export default function MainOptions(props) {
 
     return (
         <div className={style.container}>
-            <div className={style.options}>
+            <div className={style.optionsL}>
                 <h1 id='new' className={style.optionsH1} onClick={changePage}>New Playlist</h1>
             </div>
-            <div className={style.options}>
+            <div className={style.optionsR}>
                 <PlaylistPage 
                     activePage={activePage} images={images} 
                     names={names} count={count} url={url} 

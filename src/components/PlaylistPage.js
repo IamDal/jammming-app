@@ -75,12 +75,12 @@ export default function PlaylistPage(props) {
     },[images, imageIndex])
 
     return (
-        <div className='carousel'>
+        <div className={style.carousel}>
             {playlistData[imageIndex]}
             <button className={style.modify} 
                     id={'modify'} 
                     onClick={modify}>Modify Playlist</button>
-            <div>
+            <div className={style.carouselButtons} >
                 <button className={activePage === 'Playlists' ? 
                     `${style.prev}` : `${style.homePrev}`} 
                     onClick={decreaseIndex}>&#10094;</button>

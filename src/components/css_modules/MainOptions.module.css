@@ -1,4 +1,103 @@
-.options {
+.optionsL {
+    display: flex;
+    width:30vw;
+    background-image: linear-gradient(rgba(62, 4, 117, 0.972), rgba(24, 1, 42, 0));
+    border-radius: 300px;
+    align-items: center;
+    justify-content: center;
+}
+
+.optionsR {
+    display: flex;
+    width:30vw;
+    background-image: linear-gradient(rgba(62, 4, 117, 0.972), rgba(24, 1, 42, 0));
+    border-radius: 300px;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: space-around;
+    animation-name: fadeIn;
+    animation: fadeIn .5s ease-in-out;
+    width: 80vw;
+    height: 30vw;
+    margin-top: 8vh;
+}
+
+.optionsH1 {
+    color: rgb(194, 172, 231);
+}
+
+.optionsH1:hover {
+    color: white;
+    font-size: 40px;
+    transition-duration: 500ms;
+    cursor: pointer;
+}
+  
+  @keyframes fadeIn {
+    from {opacity: .2}
+    to {opacity: 1}
+  }
+
+  @media screen and (max-width: 579px) {
+    .optionsL {
+        position: relative;
+        bottom:5vh;
+        display: flex;
+        width:70vw;
+        height: 5rem;
+        background-image: linear-gradient(rgba(62, 4, 117, 0.972), rgba(24, 1, 42, 0));
+        border-radius: 300px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1vh;
+        min-width: 16rem;
+    }
+
+    .optionsR {
+        display: flex;
+        width:70vw;
+        height: auto;
+        background-image: linear-gradient(rgba(62, 4, 117, 0.972), rgba(24, 1, 42, 0));
+        border-radius: 300px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10vh;
+        min-width: 16rem;
+    }
+
+    .container {
+        display: flex;
+        flex: 1 1 auto;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        animation-name: fadeIn;
+        animation: fadeIn .5s ease-in-out;
+    }
+
+    .optionsH1 {
+        color: rgb(194, 172, 231);
+        font-size: clamp(1.5rem, 2vw, 3rem);
+    }
+  }
+
+  /*
+.optionsL {
+    display: flex;
+    height: 37.5rem;
+    width:37.5rem;
+    background-image: linear-gradient(rgba(62, 4, 117, 0.972), rgba(24, 1, 42, 0));
+    border-radius: 300px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 80px;
+}
+
+.optionsR {
     display: flex;
     height: 37.5rem;
     width:37.5rem;
@@ -35,7 +134,7 @@
   }
 
   @media screen and (max-width: 579px) {
-    .options {
+    .optionsL {
         display: flex;
         width:37.5rem;
         height: auto;
@@ -43,6 +142,19 @@
         border-radius: 300px;
         align-items: center;
         justify-content: center;
-        margin-top: 120px;
+        margin-top: 4vh;
+    }
+
+    .optionsR {
+        display: flex;
+        width:37.5rem;
+        height: auto;
+        background-image: linear-gradient(rgba(62, 4, 117, 0.972), rgba(24, 1, 42, 0));
+        border-radius: 300px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 16vh;
     }
   }
+
+  */

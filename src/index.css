@@ -19,11 +19,13 @@ code {
 ul {
   list-style-type: none;
 }
-
+/*
 .carousel{
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
+  height: 100%;
+  width: 100%;
+}*/
