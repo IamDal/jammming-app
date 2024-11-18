@@ -24,13 +24,30 @@
 
     .container {
         display: block;
-        width: 50%;
+        width: 100%;
+        height: 25vh;
+        margin-bottom: 10vh;
     }
     .results {
-        display: block;
-        width: 90%;
-        height: 400px;
-        overflow-y: scroll;
-        margin-bottom: 50px;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+
+    .results ul{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .resultTitle {
+        color: white;
+        text-align: left;
+        padding-left: 0px;
+        font-size: 25px;
     }
 }

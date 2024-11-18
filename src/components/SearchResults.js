@@ -2,6 +2,7 @@ import React, {useState, useEffect, useCallback} from "react";
 import Tracklist from './Tracklist';
 import Playlist from './Playlist';
 import Track from "./Track";
+import style from './css_modules/SearchResults.module.css'
 import { createPlaylist, getPlaylistTracks, modifyUserPlaylist } from "./SpotifyRequests";
 
 
@@ -259,7 +260,7 @@ export default function SearchResults(props) {
 
     return (
         <>
-            <div className="App-container">
+            <div className={style.appContainer}>
                 <Tracklist tracklist={tracklist} handleClick={addSong}/>
                 <Playlist selectionList={selectionList} modifiedList={modifiedSelectionList} handleSubmit={handleFormSubmit} 
                     playlistName= {playlistName} handleChange={onChange} handleSubmitPlaylist={submitPlaylist} page={activePage}
@@ -267,7 +268,7 @@ export default function SearchResults(props) {
                     />
             </div>
             <div>
-            {nowPlaying && <iframe title="Media Player" src={`https://open.spotify.com/embed/track/${nowPlaying}`} 
+            {nowPlaying && <iframe className={style.mediaPlayer} title="Media Player" src={`https://open.spotify.com/embed/track/${nowPlaying}`} 
                 width="80%" height="100" frameBorder="0"
                 allowtransparency="true" allow="encrypted-media"></iframe>}
             </div>

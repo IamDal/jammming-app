@@ -42,6 +42,15 @@ nav ul{
     li#Playlists{
         display: none;
     }
+
+    .buttons:hover{
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 800;
+        color: rgb(72, 0, 255);
+        background-color: transparent;
+        transition: .5s;
+    }
     
 }
 
