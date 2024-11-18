@@ -18,7 +18,7 @@ function App() {
 	const [searchValue, setSearchValue] = useState('');
 	const [activePage, setActivePage] = useState('Home');
 	const [playlistToModify, setPlaylistToModify] = useState(null);
-	const [playlistName, setPlaylistName] = useState('');
+	const [playlistName, setPlaylistName] = useState('New Playlist');
 	// Playlist states
 	const [playlistImages, setPlaylistImages] = useState([]);
 	const [playlistNames, setPlaylistNames] = useState([]);
