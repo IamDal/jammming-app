@@ -5,10 +5,14 @@ html, body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('./background.png');
+  background-image: repeating-linear-gradient(to bottom, #1b060b 0%, #6401cf 33%,#b00387 66%, #0a8fca 100%);
+  height: 100%;
+  background-size: 100% calc(100vh * 2);
+  background-attachment: local;
+  /*background-image: url('./background.png');
   background-position: center;
   background-size: cover;
-  height: 100%;
+  height: 100%;*/
 }
 
 code {
@@ -29,3 +33,11 @@ ul {
   height: 100%;
   width: 100%;
 }*/
+
+.colors {
+  background-color:#0a8fca;
+  background-color:#6401cf;
+  background-color:#b00387;
+  background-color:#ffffff;
+  background-color:#1b060b;
+}
