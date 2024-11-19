@@ -131,6 +131,10 @@
     margin: 1%;
 }
 
+.dots:hover {
+    cursor: pointer;
+}
+
 .dots::-webkit-scrollbar {
     height: 2px; /* Adjust scrollbar height */
 }

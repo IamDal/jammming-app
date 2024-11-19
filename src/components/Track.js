@@ -25,7 +25,7 @@ export default function Track({track, handleSongUpdate, buttonValue, prefix, set
                     <h4 className={style.artist}>{artist} | {album}</h4>
                 </div>
             </div>
-            <div>
+            <div className={style.addRemove}>
                 <a href={url}><img className={style.spotifyImageTracks} src={images} alt='Spotify logo'/></a>
                 <button className={style.button} onClick={handleSongUpdate} id={id}>{buttonValue}</button>
             </div>

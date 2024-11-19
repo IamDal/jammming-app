@@ -6,6 +6,7 @@ input {
 .input {
     background-color: inherit;
     height: 50px;
+    width: 100%;
     font-weight: bold;
     font-size: 25px;
     border-bottom: solid gray 1px;
@@ -42,7 +43,7 @@ input {
     .container {
         display: block;
         width: 100%;
-        max-height: 30vh;
+        max-height: 70vw;
         overflow-y: scroll;
     }
 
@@ -61,7 +62,6 @@ input {
         font-weight: bold;
         border-bottom: none;
         color: white;
-        width: 100%;
         height: fit-content;
         margin: 2px 0;
     }

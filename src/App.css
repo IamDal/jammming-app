@@ -4,6 +4,26 @@
   margin: auto;
 }
 
+.flash-message {
+  display: flex;
+  background-color: #1b060b;
+  box-shadow: 10px 5px 5px #6401cf;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  min-height: 5vw;
+  color: #ffffff;
+  border-radius: 2vh;
+  z-index: 1;
+  padding: 20px;
+  font-size: .6rem * .3vw;
+}
+
+.hidden {
+  display: none;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

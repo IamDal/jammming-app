@@ -269,7 +269,7 @@ export default function SearchResults(props) {
             </div>
             <div>
             {nowPlaying && <iframe className={style.mediaPlayer} title="Media Player" src={`https://open.spotify.com/embed/track/${nowPlaying}`} 
-                width="80%" height="50" frameBorder="0"
+                width="80%" height="80" frameBorder="0"
                 allowtransparency="true" allow="encrypted-media"></iframe>}
             </div>
         </>

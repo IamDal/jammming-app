@@ -1,8 +1,11 @@
 .resultTitle {
     color: white;
+    width: 35vw;
     text-align: left;
     font-size: 25px;
-    margin: 12px 0;
+    padding-bottom: 12px;
+    border-bottom: solid gray 1px;
+    margin: 10px 0 0 0 ;
 }
 
 .container {
@@ -19,6 +22,10 @@
     border-bottom: 1px #0a90ca29 solid;
 }
 
+ul {
+    padding-left: 0;
+}
+
 @media screen and (max-width: 579px) {
     ul {
         padding-left: 10px;
@@ -29,7 +36,7 @@
         width: 100%;
         min-height: 0;
         height: initial;
-        max-height: 25vh;
+        max-height: 70vw;
         margin-bottom: 10vh;
     }
     .results {
@@ -37,8 +44,8 @@
         width: 100%;
         min-height: 0;
         height: initial;
-        max-height: 30vh;
-        overflow-y: auto;
+        max-height: 70vw;
+        overflow-y: scroll;
         margin-bottom: 10px;
     }
 
@@ -56,5 +63,6 @@
         padding-left: 0px;
         font-size: 18px;
         margin: 2px 0;
+        border: none;
     }
 }

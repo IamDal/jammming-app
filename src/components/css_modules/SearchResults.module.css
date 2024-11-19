@@ -16,10 +16,9 @@
       }
 
     .mediaPlayer{
-        position: absolute;
-        bottom: 1vh;
+        position: relative;
         left: 50%;
-        width: 80%;
+        width: 100%;
         transform: translateX(-50%);
         right: auto;
     }
