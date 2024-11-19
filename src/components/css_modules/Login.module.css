@@ -23,7 +23,7 @@ p {
     height: 2.5rem;
     border: none;
     font-size: 1.25rem;
-    background-color: rgb(100, 1, 207);
+    background-color: #6401cf;
     color: white;
     font-weight: bold;
     border-radius: 20px;
@@ -68,7 +68,6 @@ p {
         height: 2.5rem;
         border: none;
         font-size: 1.25rem;
-        background-color: rgb(100, 1, 207);
         color: white;
         font-weight: bold;
         border-radius: 20px;
