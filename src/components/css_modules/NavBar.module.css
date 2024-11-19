@@ -51,6 +51,18 @@ nav ul{
         background-color: transparent;
         transition: .5s;
     }
+
+    nav {
+        height: 20px;
+    }
     
 }
 
+
+.colors {
+    background-color:#0a8fca;
+    background-color:#6401cf;
+    background-color:#b00387;
+    background-color:#ffffff;
+    background-color:#1b060b;
+}

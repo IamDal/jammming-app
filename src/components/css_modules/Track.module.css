@@ -93,14 +93,16 @@
         display:flex;
         flex-direction: column;
         justify-content: flex-start;
-        gap: 2px;
+        gap: 1px;
+        width: 17vw;
+        overflow: hidden;
     }
 
     .trackContainer {
         display: flex;
         background-color: rgba(40, 40, 40, 0.6);
         align-items: flex-start;
-        width: 30vw;
+        width: 20vw;
         justify-content: space-between;
         border-bottom: 1px rgba(182, 180, 180,0.2) solid;
         padding: 8px;
@@ -110,7 +112,10 @@
     .details {
         white-space: nowrap;
         overflow: hidden;
-        width: 100px;
+        width: fit-content;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        transition: transform 0.3s ease;
     }
 
     .title {
@@ -120,6 +125,7 @@
         width: 100%;
         font-size: .7rem;
         text-overflow: ellipsis;
+        scroll-behavior: smooth;
     }
     
     .artist {
@@ -127,5 +133,29 @@
         text-align: left;
         line-height: 0%;
         font-size: .5rem;
+        scroll-behavior: smooth;
+    }
+
+
+    .details:hover {
+        animation: scroll-on-hover 6s linear infinite;
+        cursor: pointer;
+    }
+
+    @keyframes scroll-on-hover {
+        from {
+            scroll-behavior: smooth; /* Enable smooth scroll */
+            transform: translateX(0) /* Start at the top */
+        }
+        to {
+            transform: translateX(-100%); /* Scroll to the bottom */
+        }
+    }
+    .spotifyImageTracks {
+        width: 16px;
+        height: 16px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid gray;
+        border-radius: 0;
     }
 }
