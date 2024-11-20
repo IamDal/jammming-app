@@ -19,7 +19,8 @@ function App() {
 	const [activePage, setActivePage] = useState('Home');
 	const [playlistToModify, setPlaylistToModify] = useState(null);
 	const [playlistName, setPlaylistName] = useState('New Playlist');
-	// Playlist states
+
+	// variables to handle Playlist states
 	const [playlistImages, setPlaylistImages] = useState([]);
 	const [playlistNames, setPlaylistNames] = useState([]);
 	const [playlistCounts, setPlaylistCounts] = useState(null);
@@ -30,30 +31,45 @@ function App() {
 	const timeoutRef = useRef(null)
 	const autoLogout = useRef(null)
 	
-	// Logs in current user
+	// Implement flash messages
+	function flash(message,duration = 3000){
+		const flashMessage = document.getElementById('flash-message')
+		flashMessage.textContent = message
+		flashMessage.backgroundColor = "#b00387"
+		flashMessage.classList.remove("hidden")
+
+		setTimeout(() => {
+			flashMessage.classList.add('hidden')
+		}, duration)
+	}
+
+	// Redirect to spotify authentication
 	async function loginWithSpotifyClick() {
     	await redirectToSpotifyAuthorize();
   	}
 
-
+	// handles Log out from app 
 	const handleLogout = useCallback(()=>{
 		localStorage.clear()
 		setActivePage('login')
 		window.location.reload()
 	},[])
 
-
+	// automatically logs out user after 1 hour of inactivity
 	const timedLogout = useCallback(()=>{
 		if (!localStorage.user){
 			return
 		}
+
 		const timer  = localStorage.expires_in * 1000
+
 		if (timeoutRef || autoLogout){
 			clearTimeout(timeoutRef.current)
 			clearTimeout(autoLogout.current)
 		}
+
 		timeoutRef.current = setTimeout(()=>{
-			alert('Logging out after 5 minutes of inactivity!')
+			flash('Logging out after 5 minutes of inactivity!', 2000)
 			autoLogout.current = setTimeout(()=>{
 				handleLogout()
 			}, 18000)
@@ -62,56 +78,39 @@ function App() {
 		return () => clearTimeout(timeoutRef.current)
 	},[handleLogout])
 
-	// get all playlists
+	// Get all current users playlists
 	async function getUserPlaylists(){
 		const playlistData = await getAllPlaylists()
-
 		setPlaylistImages(()=>{
-			const images = playlistData.map(item => {
+			return playlistData.map(item => {
 				if (!item['images']){
 					return null
 				}
 				return item['images'][0]['url']
 			})
-			return images
 		})
-		setPlaylistNames(()=>{
-			const names = playlistData.map(item => {
-				return item['name']
-			})
-			return names
+		setPlaylistNames(() => {
+			return playlistData.map(item => item['name'])
 		})
-		setPlaylistCounts(()=>{
-			const count = playlistData.map(item => {
-				return item['tracks']['total']
-			})
-			return count
+		setPlaylistCounts(() => {
+			return playlistData.map(item => item['tracks']['total'])
 		})
-		setPlaylistUrl(()=>{
-			const url = playlistData.map(item => {
-				return item['external_urls']['spotify']
-			})
-			return url
+		setPlaylistUrl(() => {
+			return playlistData.map(item => item['external_urls']['spotify'])
 		})
-		setPlaylistId(()=>{
-			const id = playlistData.map(item => {
-				return item['id']
-			})
-			return id
+		setPlaylistId(() => {
+			return playlistData.map(item => item['id'])
 		})
-		setPlaylistSnapshotId(()=>{
-			const snapshotId = playlistData.map(item => {
-				return item['snapshot_id']
-			})
-			return snapshotId
-		})	
+		setPlaylistSnapshotId(() => {
+			return playlistData.map(item => item['snapshot_id'])
+		})
 	}
 
 	// Function to update api token
 	const updateToken = useCallback( async () => {
     	const args = new URLSearchParams(window.location.search);
     	const code = args.get('code');
-		// Update token if valid code in search parameter
+		// Get new token if valid code in search parameter
     	if (code) {
 			try{
 				const token = await getAuthorizedToken(code)
@@ -125,20 +124,11 @@ function App() {
 			} catch (error) {
 				console.log(error.message)
 			}
-    		// Remove code from URL so we can refresh correctly.
-    		const url = new URL(window.location.href);
-    		url.searchParams.delete("code");
-  
-    		const updatedUrl = url.search ? 
-				url.href : url.href.replace('?', '');
-
-    		window.history.replaceState(
-				{}, document.title, updatedUrl
-			);
-			window.location.reload()
-  		} else if(refreshToken){
+			// Removed code goes here
+		// Update expired token if valid refresh token
+  		} else if(currentToken["refresh_token"]){
 			try{
-				const token = await getAuthorizedToken(refreshToken)
+				const token = await getAuthorizedToken(currentToken["refresh_token"])
 				if (!token['access_token']){
 					return
 				}
@@ -149,50 +139,55 @@ function App() {
 			} catch (error) {
 				console.log(error.message)
 			}
-    		// Remove code from URL so we can refresh correctly.
-    		const url = new URL(window.location.href);
-    		url.searchParams.delete("code");
-  
-    		const updatedUrl = url.search ? 
-				url.href : url.href.replace('?', '');
-
-    		window.history.replaceState(
-				{}, document.title, updatedUrl
-			);
-			window.location.reload()
+		} else {
+			return
 		}
+		// Remove code from URL so we can refresh correctly.
+		const url = new URL(window.location.href);
+		url.searchParams.delete("code");
+
+		const updatedUrl = url.search ? 
+			url.href : url.href.replace('?', '');
+
+		window.history.replaceState(
+			{}, document.title, updatedUrl
+		);
+		window.location.reload()
 	},[timedLogout])
 
-	const callUpdateToken = useCallback( async () =>{
-		if(currentToken.access_token === 'undefined' || !currentToken.access_token || currentToken.access_token === 'null'){
-		  await updateToken()
-		}
-  	},[updateToken])
 
 	// Effect to get new token if none 
 	useEffect(()=>{
+		const callUpdateToken = async () =>{
+			if(currentToken.access_token === 'undefined' || !currentToken.access_token || currentToken.access_token === 'null'){
+			  await updateToken()
+			}
+		  }
+
 		const args = new URLSearchParams(window.location.search);
     	const code = args.get('code');
 		if(code){
 			callUpdateToken()
 		}
-  	},[callUpdateToken])
+  	},[updateToken])
 
-
-	const callRefreshToken = useCallback(async () => {
-		const newToken = await refreshToken();
-		return newToken;
-	}, []);
 
 	// Gets new token on expiry
 	useEffect(()=>{
 		if (!currentToken.expires) return;
 
+		const callRefreshToken = async () => {
+			const newToken = await refreshToken();
+			return newToken;
+		};
+
 		async function handleTokenRefresh() {
 			const timer = new Date(currentToken.expires);
 			const now = new Date(Date.now());
 
-			if (!(timer - now <= 25000)) return; // If expired or close to expiring
+			if (!(timer - now <= 25000)){ 
+				return
+			}; // If expired or close to expiring
 			try{
 				const token = await callRefreshToken(); // Wait for the token to resolve
 				if (token && token.access_token) {
@@ -205,7 +200,7 @@ function App() {
 	
 		handleTokenRefresh();
 		timedLogout()
-	}, [activePage, callRefreshToken, timedLogout]);
+	}, [activePage, timedLogout]);
 
 
 	useEffect(()=>{
@@ -238,7 +233,6 @@ function App() {
 		newSearch()
 	}
 
-
 	function goToPage (e) {
 		const pageId = e.target.id
 		setActivePage(pageId)
@@ -250,13 +244,13 @@ function App() {
 		setPlaylistName(playlistNames[index])
 	}
 
-
 	return (
 		<div className="App">
 			{ currentToken.user === 'undefined' || !currentToken.user ?
 			<Login handleClick={loginWithSpotifyClick}/>
 				:<div className="App-rows">
 					<Header handleLogout={handleLogout} changePage={goToPage}/>
+					<div id= "flash-message" className="hidden flash-message"></div>
 					{activePage === 'Home' && 
 						<MainOptions changePage={goToPage} url={playlistUrl} 
 							images={playlistImages} names={playlistNames} 
