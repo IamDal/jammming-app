@@ -21,6 +21,7 @@
         width: 100%;
         transform: translateX(-50%);
         right: auto;
+        margin-top: 10px;
     }
     
 }

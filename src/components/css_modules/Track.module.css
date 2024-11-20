@@ -84,6 +84,14 @@
     border-radius: 0;
 }
 
+.addRemove {
+    display: flex;
+    flex-direction: column;
+    width: 10%;
+    justify-content: center;
+    align-items: center;
+}
+
 @media screen and (max-width: 579px) {
 
     h4.artist {
@@ -103,7 +111,7 @@
         display: flex;
         background-color: rgba(40, 40, 40, 0.6);
         align-items: flex-start;
-        min-width: 100px;
+        min-width: 50px;
         width: 20vw;
         justify-content: space-between;
         border-bottom: 1px rgba(182, 180, 180,0.2) solid;

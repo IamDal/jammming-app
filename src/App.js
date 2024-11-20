@@ -159,7 +159,9 @@ function App() {
 	// Effect to get new token if none 
 	useEffect(()=>{
 		const callUpdateToken = async () =>{
-			if(currentToken.access_token === 'undefined' || !currentToken.access_token || currentToken.access_token === 'null'){
+			const invalidTokens = [undefined, null, 'undefined', 'null', '']
+
+			if(invalidTokens.includes(currentToken.access_token)){
 			  await updateToken()
 			}
 		  }

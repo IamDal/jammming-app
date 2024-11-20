@@ -235,28 +235,35 @@ export default function SearchResults(props) {
     // Effect updates track list on change
     useEffect(()=>{
         updateTracklist()
-    },[searchResults, updateTracklist])
+
+        if(searchValue === ''){
+            setNowPlaying("")
+        }
+    },[searchResults, updateTracklist, playlistTracks, searchValue])
 
     // Effect updates selection on change
     useEffect(()=>{
-        updateSelectionList()
-    },[selection, updateSelectionList])
+        if (selection.length>0){
+            updateSelectionList()
+        } else if (tracksCopy.length>0){
+            updateModifiedSelection()
+        }
 
+    },[selection, updateSelectionList,tracksCopy,updateModifiedSelection])
+
+    // Effect updates moved tracks new location
+    /*
     useEffect(()=>{
         updateModifiedSelection()
     },[tracksCopy, updateModifiedSelection])
+    */
 
+    // Effect updates list of all modified uri
     useEffect(()=>{
         if(modifiedSelectionList){
             updateModifiedList()
         }
     },[modifiedSelectionList,updateModifiedList])
-
-    useEffect(()=>{
-        if(searchValue === ''){
-            setNowPlaying("")
-        }
-    },[searchValue, playlistTracks])
 
     return (
         <>

@@ -316,33 +316,31 @@ async function getPlaylistTracks(playlistId) {
 
 // Calls Spotify API for the current user details
 async function getCurrentUser(accessToken) {
-    if (!localStorage.userName){
-        const endpoint = apiURL + "me"
-        const headers = {
-            "Authorization": `${tokenType} ${accessToken}`
+    const endpoint = apiURL + "me"
+    const headers = {
+        "Authorization": `${tokenType} ${accessToken}`
+    }
+    try{
+        const response = await fetch(endpoint,{ headers })
+        if (!response.ok){
+            console.log(`Error: ${response.status}`)
+            throw new Error(`Error: ${response.status}`)
         }
-        try{
-            const response = await fetch(endpoint,{ headers })
-            if (!response.ok){
-                alert(`Error: ${response.status}`)
-                throw new Error(`Error: ${response.status}`)
-            }
-            
-            const data = await response.json()
-            currentUser.setUserName(data['display_name'])
-            currentUser.setUserId(data['id'])
-            if (data['images'].length === 0){
-                currentUser.setProfileImage(null)
-            } else {
-                currentUser.setProfileImage(data['images'][0]['url'])
-            }
-            currentUser.setCountry(data['country'])
-            currentUser.setFollowers(data['followers']['total'])
-            currentUser.setSpotifyURL(data['external_urls']['spotify'])
-            return currentUser
-        } catch (error) {
-            console.log(error.message)
+        
+        const data = await response.json()
+        currentUser.setUserName(data['display_name'])
+        currentUser.setUserId(data['id'])
+        if (data['images'].length === 0){
+            currentUser.setProfileImage(null)
+        } else {
+            currentUser.setProfileImage(data['images'][0]['url'])
         }
+        currentUser.setCountry(data['country'])
+        currentUser.setFollowers(data['followers']['total'])
+        currentUser.setSpotifyURL(data['external_urls']['spotify'])
+        return currentUser
+    } catch (error) {
+        console.log(error.message)
     }
 }
 
@@ -350,7 +348,7 @@ async function getCurrentUser(accessToken) {
 async function createPlaylist(nameOfPlaylist, tracks) {
     try {
         const user = await getCurrentUser(accessToken)
-        const userId = user.userId //"31j7onrgr45a5sso427rl7ddzwoy"//
+        const userId = user.userId
         const endpoint = `${apiURL}users/${userId}/playlists`
         const description = `${nameOfPlaylist} description`
         const headers = {
@@ -366,15 +364,17 @@ async function createPlaylist(nameOfPlaylist, tracks) {
             method:"POST", headers, body
         })
         if(!response.ok) {
-            throw new Error(`Error: ${response.status}`)
+            throw new Error(`Failed to create new playlist: ${response.status}`)
         }
-        try {
-            const playlistId = await getPlaylistId(nameOfPlaylist)
+
+        const playlistData = await response.json()
+        const playlistId = playlistData.id
+        if (tracks.length > 0){
             await addTracksToPlaylist(tracks, playlistId)
-        } catch(error){
-            console.log(error.message)
+            console.log('Playlist Created')
+        } else {
+            console.log('Empty Playlist Created')
         }
-        console.log('Playlist created')
     } catch (error) {
         console.log(error.message)
     }
@@ -399,6 +399,7 @@ async function getAllPlaylists() {
 }
 
 // Calls Spotify API retrieve a specific playlist id
+/*
 async function getPlaylistId(playlistName) {
     const endpoint = apiURL + 'me/playlists'
     const headers = {             
@@ -417,7 +418,7 @@ async function getPlaylistId(playlistName) {
     } catch (error) {
         console.log(error.message)
     }
-}
+}*/
 
 // Calls Spotify API to add tracks to a playlist
 async function addTracksToPlaylist(tracks, playlistId) {
@@ -438,7 +439,6 @@ async function addTracksToPlaylist(tracks, playlistId) {
         if (!response.ok) {
             throw new Error(`Error ${response.status}`)
         }
-        alert('Songs added successfully!')
     } catch (error) {
         console.log(error.message)
     }
