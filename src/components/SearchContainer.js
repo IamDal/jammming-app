@@ -7,7 +7,7 @@ export default function SearchContainer(props) {
         activePage, handleSubmit, handleChange, searchValue,
         setSearchValue, searchResults, playlistName,
         setPlaylistName, getCurrentPlaylist, playlistToModify,
-        playlistSnapshotId, changePage
+        playlistSnapshotId, changePage, getUserPlaylists
     } = props
 
     return (
@@ -16,7 +16,7 @@ export default function SearchContainer(props) {
                 handleChange={handleChange} 
                 searchValue={searchValue}/>
 
-            <SearchResults activePage={activePage} changePage={changePage}
+            <SearchResults activePage={activePage} changePage={changePage} getUserPlaylists={getUserPlaylists}
                 searchValue={searchValue} setSearchValue={setSearchValue} 
                 searchResults={searchResults} playlistName={playlistName} 
                 setPlaylistName={setPlaylistName} getCurrentPlaylist={getCurrentPlaylist} 

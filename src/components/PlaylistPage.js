@@ -8,9 +8,11 @@ export default function PlaylistPage(props) {
         goToPage, getCurrentPlaylist, activePage 
     } = props
 
+    // Stores current playlist index
     const [imageIndex, setImageIndex] = useState(0)
     const imageIndexRef = useRef(imageIndex);
 
+    // Increases the index when called
     const increaseIndex = useCallback(() => {
         if (imageIndex < images.length-1){
             setImageIndex((prev)=> prev + 1)
@@ -19,6 +21,7 @@ export default function PlaylistPage(props) {
         }
     },[setImageIndex, imageIndex, images])
     
+    // Decreases the index when called
     const decreaseIndex = useCallback(() => {
         if (imageIndex > 0){
             setImageIndex((prev)=> prev - 1)
@@ -27,6 +30,7 @@ export default function PlaylistPage(props) {
         }
     },[imageIndex,setImageIndex,images])
 
+    // Parses the id to get the index of a selected playlist
     function handleClick(e) {
         const id = e.target.id
         const selectedIndex = parseInt(id.slice(5),10)
@@ -34,6 +38,7 @@ export default function PlaylistPage(props) {
         imageIndexRef.current=selectedIndex
     }
 
+    // Loads tracks of selected playlist to edit in new component
     function modify(e) {
         getCurrentPlaylist(imageIndex)
         goToPage(e)
@@ -60,6 +65,7 @@ export default function PlaylistPage(props) {
         )
     }
 
+    // automatically changes current playlist
     useEffect(()=>{
         const timeoutId = setTimeout(()=>{
             if (imageIndexRef.current < images.length - 1){
@@ -71,9 +77,9 @@ export default function PlaylistPage(props) {
             }
         }, 8000)
         return () => clearTimeout(timeoutId)
-
     },[images, imageIndex])
 
+    
     return (
         <div className={style.carousel}>
             {playlistData[imageIndex]}

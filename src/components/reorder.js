@@ -1,3 +1,11 @@
+/** 
+* This script creates a sublist of the tracks that have been 
+* add, removed or reordered and parses them to then get return 
+* the tracks new locations in the list
+* @param {array} originalTrackList - The original array of uri
+* @param {array} finalTracklist - The submitted array of uri
+*/
+ 
 function makeSubList(originalTrackList, finalTrackList){
     const parsedTrackList = []
     for (let i=0; i<finalTrackList.length; i++){

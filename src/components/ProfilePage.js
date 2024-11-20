@@ -16,18 +16,11 @@ export default function ProfilePage() {
                 <h1>{user[0]}</h1>:<img alt='user profile' src={image}/>}
             </div>
 
-            <h1>
-                {user}
-            </h1>
-            <h3>
-                {location}
-            </h3>
-            <p>
-                Followers
-            </p>
-            <h3>
-                {followerCount}
-            </h3>
+            <h1>{user}</h1>
+            <h3>{location}</h3>
+            <p>Followers</p>
+            <h3>{followerCount}</h3>
+            
             <button className={style.button}>
                 <a href={url}>see on spotify <img src={logo} className={style.linkLogo} alt="spotify logo"/></a>
             </button>

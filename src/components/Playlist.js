@@ -11,7 +11,7 @@ export default function Playlist (props) {
   const formId = ['New-Playlist', 'Modify-Playlist']
   const content = (
         <>
-            <input className={style.input} type='text' 
+            <input id='playlist-name' className={style.input} type='text' 
             placeholder='Playlist Name' value={playlistName} 
             onChange={handleChange}/>
 
@@ -21,14 +21,14 @@ export default function Playlist (props) {
                 </ul>
             </div>
 
-            <button className={style.button}>
+            <button id="playlist-submit" className={style.button}>
                 {page === 'new'?'Create New Playlist':'Modify Playlist'}
             </button>
         </>
     )
 
   return(
-    <form id={formId[page === 'new' ? 0 : 1]} 
+    <form name={formId[page === 'new' ? 0 : 1]}  id={formId[page === 'new' ? 0 : 1]} 
           onSubmit={page === 'new' ? handleSubmit : handleSubmitPlaylist}>
         {content}
     </form>

@@ -4,9 +4,8 @@ import PlaylistPage from './PlaylistPage'
 
 export default function MainOptions(props) {
     const { 
-        changePage, images, names, 
-        count, url, id, 
-        getCurrentPlaylist, activePage } = props
+        changePage, images, names, count, 
+        url, id, getCurrentPlaylist, activePage } = props
 
     return (
         <div className={style.container}>

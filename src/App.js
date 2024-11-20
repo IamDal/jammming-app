@@ -186,14 +186,17 @@ function App() {
 		async function handleTokenRefresh() {
 			const timer = new Date(currentToken.expires);
 			const now = new Date(Date.now());
-
+			
+			// If expired or close to expiring
 			if (!(timer - now <= 25000)){ 
 				return
-			}; // If expired or close to expiring
+			}; 
 			try{
-				const token = await callRefreshToken(); // Wait for the token to resolve
+				// Wait for the token to resolve
+				const token = await callRefreshToken(); 
+				// Update the token if successful
 				if (token && token.access_token) {
-					currentToken.save(token); // Update the token if successful
+					currentToken.save(token); 
 				}
 			} catch(e) {
 				console.log("Failed to refresh token", e);
@@ -209,7 +212,7 @@ function App() {
 		if(currentToken.user){
 			getUserPlaylists()
 		}
-	}, [activePage])
+	}, [])
 
 	// Updates Search list
 	async function newSearch() {
@@ -263,7 +266,7 @@ function App() {
 					{(activePage === 'new' || activePage === 'modify') && 
 						<SearchContainer handleSubmit={handleSubmit} 
 								handleChange={handleChange} searchValue={searchValue} changePage={setActivePage}
-								activePage={activePage} setSearchValue={setSearchValue} 
+								activePage={activePage} setSearchValue={setSearchValue} getUserPlaylists={getUserPlaylists}
 								searchResults={searchResults} playlistName={playlistName} 
 								setPlaylistName={setPlaylistName} getCurrentPlaylist={getCurrentPlaylist} 
 								playlistToModify={playlistToModify} playlistSnapshotId={currentSnapshotId}/>}

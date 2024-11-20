@@ -9,7 +9,7 @@ import { createPlaylist, getPlaylistTracks, modifyUserPlaylist } from "./Spotify
 export default function SearchResults(props) {
     const { searchResults, searchValue, setSearchValue, 
         activePage, playlistToModify, playlistSnapshotId, 
-        playlistName, setPlaylistName, changePage } = props
+        playlistName, setPlaylistName, changePage, getUserPlaylists } = props
 
     const [selection, setSelection ] = useState([])
     const [currentPlaylistName, setCurrentPlaylistName ] = useState(playlistName)
@@ -82,9 +82,9 @@ export default function SearchResults(props) {
 
 
     useEffect(()=>{
-        if(playlistToModify)
+        if(playlistToModify && activePage === "modify")
             fetchTracks()
-    },[playlistToModify, fetchTracks])
+    },[playlistToModify, fetchTracks, activePage])
 
 
     const getTrackModifications = useCallback(()=>{
@@ -120,6 +120,7 @@ export default function SearchResults(props) {
         setPlaylistName('')
         changePage('new')
         setCurrentPlaylistName('')
+        getUserPlaylists()
     }
 
     // Function to update playlist name
@@ -136,7 +137,8 @@ export default function SearchResults(props) {
         setTracklist([])
         setPlaylistName('')
         setSearchValue('')
-    },[playlistName, selection, setPlaylistName, setSearchValue])
+        getUserPlaylists()
+    },[playlistName, selection, setPlaylistName, setSearchValue, getUserPlaylists])
 
     // Function to add new song to playlist
     const addSong = useCallback((e) => {

@@ -5,7 +5,7 @@ export default function SearchBar(props) {
     const {handleChange, handleSubmit, searchValue} = props
     return(
         <>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} name='search-bar' id='main-search-bar'>
                 <div  className={style.container}>
                     <input id="search-bar"
                         className={style.searchBar}
